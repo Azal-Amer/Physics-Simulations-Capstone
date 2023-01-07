@@ -163,6 +163,8 @@ function setup() {
     // text('Drag', dragSlider.x * 2 + dragSlider.width, 65);
     
     myChart = createChart(RK[0],RK[1]);
+    
+
 
 }
 
@@ -253,6 +255,7 @@ function draw() {
   
     point(1, 0, 0);
     currCamera.setPosition(0, 0, 50);
+    pointLight(255, 255, 255, 0, 0, 60);
 
     
     textSize(1.5);
