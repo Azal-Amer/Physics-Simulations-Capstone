@@ -1,0 +1,74 @@
+@font-face {
+  font-family: "Hussar Bold";
+  src: url('/Assets/HussarBold.otf');
+}
+html, body {
+    right: 50px;
+    padding: 0;
+  }
+  canvas {
+    display: block;
+    border-radius: 15%;
+  }
+
+.container {
+  display: flex;
+  background-color: #191a1a; /* Replace #colur with your desired color */
+  border-radius: 15px;
+  box-shadow: -10px 10px 5px black;
+  
+  
+}
+
+
+
+/* #squircle {
+
+  width: 200px;
+  height: 200px;
+  
+} */
+.fixed-width-div {
+  width: 500px;
+  height: 500px;
+}
+
+.variable-width-div {
+  width: 56%;
+  height: 500px;
+}
+/* @media(min-width:700px){
+  
+} */
+@media(max-width:1000px){
+  .container{
+    flex-direction: column;
+  }
+  .variable-width-div {
+    width: 97%;
+    height: 500px;
+  }
+  .fixed-width-div {
+    align-self:center;
+
+    /* left: 25%;
+    position:absolute; */
+  }
+}
+
+
+/* This will create a container that has two divs inside of it, one with a fixed width and height of 500px and the other with a fixed height of 500px and a width that takes up the remaining space in the container. */
+
+body{
+  background-color: #3c3c3c;
+  font-family:'Hussar Bold';
+  
+
+}
+p{
+  font-weight:400;
+  font-size:1rem;
+  text-align: center;
+  color:white
+}
+
