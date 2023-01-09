@@ -28,10 +28,7 @@ html, body {
   height: 200px;
   
 } */
-.fixed-width-div {
-  width: 500px;
-  height: 500px;
-}
+
 
 .variable-width-div {
   width: 56%;
@@ -39,6 +36,17 @@ html, body {
 }
 /* @media(min-width:700px){
   
+} */
+
+/* @media (max-width: 900px) {
+  .container{
+    flex-direction: column;
+  }
+  .fixed-width-div{
+    width: (500px/100vw);
+    height:(500px/100vw);
+    transform: scale(screen.width/500px);
+  }
 } */
 @media(max-width:1000px){
   .container{
@@ -55,7 +63,14 @@ html, body {
     position:absolute; */
   }
 }
+/* .fixed-width-div {
+  width: 500px;
+  height: 500px;
+} */
+/* @media(min-width:900px){
+  
 
+} */
 
 /* This will create a container that has two divs inside of it, one with a fixed width and height of 500px and the other with a fixed height of 500px and a width that takes up the remaining space in the container. */
 
@@ -70,5 +85,8 @@ p{
   font-size:1rem;
   text-align: center;
   color:white
+}
+display:none{
+
 }
 
