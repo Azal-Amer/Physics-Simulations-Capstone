@@ -37,7 +37,7 @@ html, body {
 /* @media(min-width:700px){
   
 } */
-
+/* 
 @media (max-width:1000px) {
   .container{
     flex-direction: column;
@@ -47,7 +47,7 @@ html, body {
     height:100%;
     transform: scale(2);
   }
-}
+} */
 @media(max-width:1000px){
   .container{
     flex-direction: column;
