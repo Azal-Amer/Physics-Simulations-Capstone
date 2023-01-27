@@ -1,5 +1,4 @@
 let myChart;
-let div;
 function createChart(xValues, yValues) {
 
   RK1 = Smoother([yValues.slice(),xValues.slice()]);
@@ -65,35 +64,53 @@ function preload(){
     
 }
 
+
 function setup() {
-  
-  // width = document.querySelector('.fixed-width-div').offsetLeft;
-  width = 500;
-  height = width;
-  console.log(width)
-  
-  //  = div.style.width
+  div = document.querySelector('.fixed-width-div');
 
+  // height = 500
+  // width = 500
+  let scaleX=1;
+  let scaleY = 1
+  if(windowWidth/windowHeight<900){
+    scaleX=2;
+    scaleY=1.45
+  }
+  else{
+    scaleX=1
+    scaleY=1
+  }
 
-  var myCanvas = createCanvas(width, width,WEBGL);
-  myCanvas.parent('canvas-container');
-  angle = 0;
-  time = 10;
-  pendulum_length = 10
-
-  stepSize = .001;
-  RK = RK4(x_0,v_0,time,stepSize,A,B,C,D,zerothOrderParam(pendulum_length),firstOrderParam);
-  RKx = RK[0];
     
-    // width = width*scaleX
-    // height = width*scaleY
+    if(windowWidth/windowHeight<1){
+      width = windowWidth
+      height = windowWidth
+    }
+
+    else{
+      width = 500;
+      height = 500;
+    }
+    
+    var myCanvas = createCanvas(height, width,WEBGL);
+    myCanvas.parent('canvas-container');
+    angle = 0;
+    time = 10;
+    pendulum_length = 10
+
+    stepSize = .001;
+    RK = RK4(x_0,v_0,time,stepSize,A,B,C,D,zerothOrderParam(pendulum_length),firstOrderParam);
+    RKx = RK[0];
+    
+    width = width*scaleX
+    height = width*scaleY
     
     
     
     framerate = RKx.length*10/time;
     frameRate(framerate);
     frame = 0
-    
+    currCamera = createCamera();
 
     dragSlider = createSlider(0, 5, 0,.1);
     dragSlider.style('position', 'absolute  ');
@@ -104,7 +121,6 @@ function setup() {
     thetaSlider = createSlider(-Math.PI/2,Math.PI/2,0,.01)
     thetaSlider.style('position', 'absolute');
     thetaSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
-
     
 
     
@@ -120,9 +136,10 @@ function setup() {
     lengthSlider = createSlider(.1,25,pendulum_length,.1)
     lengthSlider.style('position', 'absolute  ');
     lengthSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
-
-  
-
+    dragSlider.style('left', `${canvas.offsetLeft + (72/500)*width}px`);
+    thetaSlider.style('left', `${canvas.offsetLeft + (72/500)*width}px`);
+    velocitySlider.style('left', `${canvas.offsetLeft + (255/500)*width}px`);
+    lengthSlider.style('left', `${canvas.offsetLeft + (255/500)*width}px`);
     
 
 
@@ -130,8 +147,7 @@ function setup() {
     reset = createButton("Reset")
     reset.style('position', 'absolute ');
     reset.style('top', `${height -360}px`);
-    reset.style('left', `${canvas.offsetLeft+72}px`);  
-    
+    reset.style('left', `${canvas.offsetLeft+72}px`);   
 
     reset.mousePressed(restart);
     reset.style('border-radius',6)
@@ -149,24 +165,36 @@ function setup() {
     
     textAlign(LEFT);
     
-    text('Starting Position', thetaSlider.x * 2 + thetaSlider.width, 95);
-    text('Drag', dragSlider.x * 2 + dragSlider.width, 65);
+    // text('Starting Position', thetaSlider.x * 2 + thetaSlider.width, 95);
+    // text('Drag', dragSlider.x * 2 + dragSlider.width, 65);
     
     myChart = createChart(RK[0],RK[1]);
-    currCamera = createCamera();
-    windowResized() 
+    
 
 
 }
-
+function resizeDiv() {
+  // const ratio = window.innerWidth / 500;
+  div.style.width = windowWidth
+  div.style.height = div.style.width;
+  currCamera.setPosition(0, 0, 50);
+}
 function windowResized() {
-  console.log('sd')
   // if screensize less than 900px, then double height and width
+  let scaleX,scaleY=1;
+  if(windowWidth/windowHeight<1){
+    scaleX=2;
+    scaleY=1.45
+    resizeDiv()
 
-  // width = document.querySelector('.fixed-width-div').offsetLeft;
-  // height = width;
-  // height = document.querySelector('.fixed-width-div').offsetHeight;
-  console.log(width,height)
+  }
+  else{
+    scaleX,scaleY=1
+  }
+
+  width = windowWidth;
+  height = scaleY*document.querySelector('.fixed-width-div').offsetHeight;
+
   
   velocitySlider.style('top', `${canvas.offsetTop +(445/500)*height}px`);
   lengthSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
@@ -174,12 +202,17 @@ function windowResized() {
   dragSlider.style('top', `${canvas.offsetTop +(445/500)*height}px`);
   velocitySlider.style('left', `${canvas.offsetLeft + (255/500)*width}px`);
   lengthSlider.style('left', `${canvas.offsetLeft + (255/500)*width}px`);
-  dragSlider.style('left', `${canvas.offsetLeft + (80/500)*width}px`);
-  thetaSlider.style('left', `${canvas.offsetLeft + (72/500)*width}px`);
 
+  dragSlider.style('left', `${canvas.offsetLeft + (72/500)*width}px`);
+  thetaSlider.style('left', `${canvas.offsetLeft + (72/500)*width}px`);
+  if(windowWidth/windowHeight>1){
+    width = 500;
+    height = 500;
+  }
+  height = width
+  resizeCanvas(width, width);
   currCamera.setPosition(0, 0, 50);
 }
-
 function restart(){
   frame = 0
 }
@@ -262,7 +295,10 @@ function draw() {
     
   
     point(1, 0, 0);
-   
+    if(windowWidth>900){
+      resizeCanvas(500, 500)
+
+    }
     currCamera.setPosition(0, 0, 50);
 
     

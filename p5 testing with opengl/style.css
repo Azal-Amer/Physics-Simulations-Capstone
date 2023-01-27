@@ -37,15 +37,15 @@ html, body {
 /* @media(min-width:700px){
   
 } */
-/* 
-@media (max-width:1000px) {
+
+/* @media (max-width: 900px) {
   .container{
     flex-direction: column;
   }
-  #canvas-container{
-    width: 100%;
-    height:100%;
-    transform: scale(2);
+  .fixed-width-div{
+    width: (500px/100vw);
+    height:(500px/100vw);
+    transform: scale(screen.width/500px);
   }
 } */
 @media(max-width:1000px){
@@ -54,7 +54,7 @@ html, body {
   }
   .variable-width-div {
     width: 97%;
-    height: 100%;
+    height: 500px;
   }
   .fixed-width-div {
     align-self:center;
@@ -63,7 +63,14 @@ html, body {
     position:absolute; */
   }
 }
+/* .fixed-width-div {
+  width: 500px;
+  height: 500px;
+} */
+/* @media(min-width:900px){
+  
 
+} */
 
 /* This will create a container that has two divs inside of it, one with a fixed width and height of 500px and the other with a fixed height of 500px and a width that takes up the remaining space in the container. */
 
@@ -79,5 +86,7 @@ p{
   text-align: center;
   color:white
 }
+display:none{
 
+}
 
