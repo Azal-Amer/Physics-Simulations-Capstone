@@ -1,282 +1,153 @@
 let myChart;
 let div;
-function createChart(xValues, yValues) {
-
-  RK1 = Smoother([yValues.slice(),xValues.slice()]);
-  yValues=RK1[0]
-  xValues=RK1[1]
-  rounded = xValues.map(Math.round)
-  degreesArray = yValues.map(val => val*57.2957805);
-
-  console.log('woof')
-  // Get the context of the canvas element we want to select
-  var ctx = document.getElementById("myChart").getContext("2d");
-
-  // Create a new chart using the chart.js library
-  Chart.defaults.color = "#8c8c8c";
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    pointRadius: .1,
-    pointHoverRadius: .1,
-
-    data: {
-      labels: rounded,
-      datasets: [{
-        label: 'Displacement Graph  ',
-        data: degreesArray,
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        borderColor: '#1566e4',
-        borderWidth: 1,
-        hoverOffset: 4
-      }]
-    }
-    ,
-    options: {
-      scales: {
-        y: {
-          title:{
-            display:true,
-            text:'Degrees'
-          },
-          grid: {
-            color: '#3c3c3c'
-          }
-        },
-        x: {
-          title:{
-            display:true,
-            text:'Seconds'
-          },
-          grid:{
-            color:'#3c3c3c'
-          }
-        },
-    },
-    maintainAspectRatio: false
-
-  },
-  });
-  return myChart
-}
-
-// const algor = require('./simulating/Approximating Algorithms.js');
-function preload(){
-    myFont= loadFont('/Assets/HussarBold.otf');
-    
-}
-
-function setup() {
+let RK;
+let frame;
+let drag=0;
+let heat = 0;
+let pendulum_length=10
+let t_0;
+var s1 = function(sketch){
+  // sketchy=sketch
+  sketch.preload = preloads1(sketch,500)
+  sketch.setup = setups1(sketch)
+  sketch.draw = drawy(sketch)
+  sketch.windowResized= function(){
+    console.log('sd')
+    height = width
+    // if screensize less than 900px, then double height and width
   
-  // width = document.querySelector('.fixed-width-div').offsetLeft;
-  width = 500;
-  height = width;
-  console.log(width)
+    // width = document.querySelector('.fixed-width-div').offsetLeft;
+    // height = width;
+    // height = document.querySelector('.fixed-width-div').offsetHeight;
+    console.log(width,height)
+    
+    sketch.velocitySlider.style('top', `${sketch.canvas.offsetTop +(445/500)*height}px`);
+    sketch.lengthSlider.style('top', `${sketch.canvas.offsetTop+(390/500)*height}px`);
+    sketch.thetaSlider.style('top', `${sketch.canvas.offsetTop+(390/500)*height}px`);
+    sketch.dragSlider.style('top', `${sketch.canvas.offsetTop +(445/500)*height}px`);
+    sketch.velocitySlider.style('left', `${sketch.canvas.offsetLeft + (255/500)*width}px`);
+    sketch.lengthSlider.style('left', `${sketch.canvas.offsetLeft + (255/500)*width}px`);
+    sketch.dragSlider.style('left', `${sketch.canvas.offsetLeft + (80/500)*width}px`);
+    sketch.thetaSlider.style('left', `${sketch.canvas.offsetLeft + (72/500)*width}px`);
   
-  //  = div.style.width
-
-
-  var myCanvas = createCanvas(width, width,WEBGL);
-  myCanvas.parent('canvas-container');
-  angle = 0;
-  time = 10;
-  pendulum_length = 10
-
-  stepSize = .001;
-  RK = RK4(x_0,v_0,time,stepSize,A,B,C,D,zerothOrderParam(pendulum_length),firstOrderParam);
-  RKx = RK[0];
-    
-    // width = width*scaleX
-    // height = width*scaleY
-    
-    
-    
-    framerate = RKx.length*10/time;
-    frameRate(framerate);
-    frame = 0
-    
-
-    dragSlider = createSlider(0, 5, 0,.1);
-    dragSlider.style('position', 'absolute  ');
-    dragSlider.style('top', `${canvas.offsetTop +(445/500)*height}px`);
-    
-
-    
-    thetaSlider = createSlider(-Math.PI/2,Math.PI/2,0,.01)
-    thetaSlider.style('position', 'absolute');
-    thetaSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
-
-    
-
-    
-    velocitySlider = createSlider(0,10,0,.1)
-    velocitySlider.style('position', 'absolute  ');
-    velocitySlider.style('top', `${canvas.offsetTop +(445/500)*height}px`);
-
-    
-    
-    
-
-
-    lengthSlider = createSlider(.1,25,pendulum_length,.1)
-    lengthSlider.style('position', 'absolute  ');
-    lengthSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
-
-  
-
-    
-
-
-
-    reset = createButton("Reset")
-    reset.style('position', 'absolute ');
-    reset.style('top', `${height -360}px`);
-    reset.style('left', `${canvas.offsetLeft+72}px`);  
-    
-
-    reset.mousePressed(restart);
-    reset.style('border-radius',6)
-    reset.style('background-color','#0060df')
-    reset.style('color','#ffffff')
-    reset.style('padding','7px 16px')
-    reset.style('font-size', '16px')
-    reset.style('font-family',"Hussar Bold")
-    
-    pressed = false
-    k = 0;
-    displacement = 0;
-
-    textFont(myFont);        
-    
-    textAlign(LEFT);
-    
-    text('Starting Position', thetaSlider.x * 2 + thetaSlider.width, 95);
-    text('Drag', dragSlider.x * 2 + dragSlider.width, 65);
-    
-    myChart = createChart(RK[0],RK[1]);
-    currCamera = createCamera();
-    windowResized() 
+    sketch.currCamera.setPosition(0, 0, 50);
+  }
 
 
 }
-
-function windowResized() {
-  console.log('sd')
-  // if screensize less than 900px, then double height and width
-
-  // width = document.querySelector('.fixed-width-div').offsetLeft;
-  // height = width;
-  // height = document.querySelector('.fixed-width-div').offsetHeight;
-  console.log(width,height)
-  
-  velocitySlider.style('top', `${canvas.offsetTop +(445/500)*height}px`);
-  lengthSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
-  thetaSlider.style('top', `${canvas.offsetTop+(390/500)*height}px`);
-  dragSlider.style('top', `${canvas.offsetTop +(445/500)*height}px`);
-  velocitySlider.style('left', `${canvas.offsetLeft + (255/500)*width}px`);
-  lengthSlider.style('left', `${canvas.offsetLeft + (255/500)*width}px`);
-  dragSlider.style('left', `${canvas.offsetLeft + (80/500)*width}px`);
-  thetaSlider.style('left', `${canvas.offsetLeft + (72/500)*width}px`);
-
-  currCamera.setPosition(0, 0, 50);
-}
-
-function restart(){
-  frame = 0
-}
-
-
-function updateSim(){   
-    RK = RK4(thetaSlider.value(),velocitySlider.value(),time,stepSize,A,B(0,dragSlider.value()),C,D,zerothOrderParam(lengthSlider.value()),firstOrderParam);
-    // const work = async () => {
-    //   await sleep(1000)
-    //   //code
-    //   }
-    // // sleep(1000);
-    // work;
-    RKx = RK[0].slice();
-    RKy=RK[1].slice();
-    pendulum_length=lengthSlider.value()
-    // console.log(RK)
-    frame = 0
-    myChart.destroy()
-    myChart= createChart(RKx,RKy);
-}
-
-
-function draw() {
-  
-    if(frame<RKx.length){
-        strokeWeight(.2); 
-        stroke(255)
-        fill(255,255,0)
-        background('#191a1a');
-        rectMode(CENTER);
-        translate(0,-15,0)
-        sphere(1)
-        stroke(255,0,0)
-        
-
-        rotateZ(-RKx[frame])
-        
-        translate(0,pendulum_length/2,0)
-        // This box is the pendulum arm
-        
-        box(.5,pendulum_length,.5);
-
-        
-        strokeWeight(.1); 
-
-
-        stroke('#0060df');
-        
-        fill(0,255,255)
-        // rotateX(angle*.01);
-        // rotateY(angle*.01+3);
-            
-        // translate(10*Math.sin(RKx[frame]),10*Math.cos(RKx[frame])+12,0);
-        translate(0,pendulum_length/2,0)
-        sphere(2)
-
-
-        // fill(255)
-        
- 
-    }
-    else{
-        frame = 0;
-    }
-    frame++;
-
-    thetaSlider.changed(updateSim);
-    velocitySlider.changed(updateSim);
-    dragSlider.changed(updateSim);
-    lengthSlider.changed(updateSim);
-
-
-
-
-
-
-     
-    
-    
-  
-    point(1, 0, 0);
+new p5(s1);
+var s2 = function( sketch ) {
+  sketch.preload = preloads1(sketch);
+  sketch.setup = function() {
+  sketch.textFont(myFont);    
+   let canvas2 = sketch.createCanvas(150, 500);
+   canvas2.parent("barcharts")
+  //  canvas2.position(600,0);
+  //  console.log(RK[2])
+  //  console.log(heat)
+  heat = 0
    
-    currCamera.setPosition(0, 0, 50);
+ }
+ sketch.draw = function() {
+  heightPendulum = pendulum_length*(Math.cos(RK[0][frame])-1)
+  GPE = -9.8*heightPendulum
+  
+  if (frame == 1){
+    heat = drag*Math.abs(RK[2][0])*(frame/24)
+    // mass of pendulum
+    
+  }
+  else{
+   //for canvas 2
+    
+    increment= drag*Math.abs(RK[2][frame])*(frame/24);
+    heat +=increment;
+  }
+  velocity =RK[2][frame]
+  TE=-9.8*pendulum_length*(Math.cos(RK[0][0])-1)+1.2*pendulum_length**2*RK[2][0]**2
 
-    
-    textSize(1.5);
-    fill(255)
-    text("Initial Velocity: " + velocitySlider.value() + "m/s", 1,  22);
-    text("Starting Angle: " + Math.round((thetaSlider.value()* 360/3.1415)/2) + "°", -20,  16);
-    text( "Drag: " + dragSlider.value(), -20,  22);
-    text("Pendulum Length: " + lengthSlider.value() + "m", 1,  16);
-    text("Drag-Length Ratio: " + Math.round(10*(dragSlider.value()/(9.8/lengthSlider.value())))/10, 1,  - 21);
-    
-    
-}
 
+  KE = 1.2*(pendulum_length**2)*(velocity**2)
+  // KE = TE-GPE-(heat)
+  if (KE<0){
+    KE=0
+  }
+  
+  // console.log(GPE+KE+heat*2)
+  heat = TE-GPE-KE
+  if (drag ==0){
+    heat = 0
+  }
+
+  heatColor = "#ffff00"
+  KEColor = "#00bfff"
+  GPEColor = "#00ff00"
+  if(heat>300){
+    heat = 300
+    heatColor ="#ff0000"
+  }
+  if(Math.abs(KE)>300){
+    KE = 300
+    KEColor= "#0000ff"
+  }
+  if(GPE>300){
+    GPE = 300
+    GPEColor="#006400"
+
+  }
+  // Stop the KEbar and Heat bar from overflowing, istead change the color when it reaches the top to indicate it
+  
+  
+  sketch.background("#191a1a");
+  sketch.fill(255)
+  sketch.noStroke()
+  sketch.textSize(30);
+  sketch.text("Energy",10,70)
+  sketch.textSize(20);
+  
+  
+
+  
+  sketch.strokeWeight(1);
+  sketch.stroke("#0060df");
+
+
+  sketch.fill(GPEColor)
+   sketch.rect(0, 450, 50,-GPE );
+   
+
+   sketch.fill(KEColor)
+   sketch.rect(50,450,50,-(KE))
+   sketch.fill(heatColor)
+   sketch.rect(100, 450, 50,-heat );
+
+
+
+   
+
+   
+
+   sketch.fill(GPEColor)
+   
+   sketch.noStroke()
+   sketch.text("GPE",2,475)
+   sketch.textSize(20);
+   sketch.fill(KEColor)
+   sketch.text("KE",60,475)
+   sketch.fill(0,255,0)
+   sketch.textSize(15);
+   sketch.fill(heatColor)
+   sketch.text("HEAT",105,473)
+   
+   
+
+   
+
+
+
+ }
+};
+new p5(s2);
 
 // Ideal pivot point is at 10
 

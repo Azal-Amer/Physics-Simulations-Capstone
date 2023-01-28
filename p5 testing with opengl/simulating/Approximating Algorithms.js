@@ -46,6 +46,7 @@ function euler(x_0,v_0,iterations,h,a,b,c,d,zerothOrderParam,firstOrderParam){
     // console.log(a,b,c,d,zerothOrderParam,firstOrderParam)
     let x=[];
     let timey = [];
+    let velocity = []
     for(let i=0;i<Math.round(iterations/h);i++){
         const t_i = i*h
         let v = [v_0]
@@ -61,29 +62,36 @@ function euler(x_0,v_0,iterations,h,a,b,c,d,zerothOrderParam,firstOrderParam){
           //     # x_i is an imaginary point used for calculation
           // # with the weighted average of this v, we then actually do the x step size
         let v_weighted = RK_weighting(v);
-            // v = v_weighted;
+        // vweighted is the output velocity from the 4 step RK4, RK_weighting takes an array of length n, and weighs it according to the RK parameters
         let x_1 = firstOrder(v_weighted,x_0,h);
+        // Does the first order position calculations
         x.push(x_1);
         timey.push(t_i);
+
         x_0=x_1;
         v_0 = v_weighted;
+        velocity.push(v_0)
       }
     const xInterp=[]
     const timeInterp=[]
+    const vInterp=[]
     for(var i=0;i<x.length;i++){
         if(i%24==0){
             xInterp.push(x[i])
             timeInterp.push(timey[i])
+            vInterp.push(velocity[i])
         }
         
     }
     x = xInterp.slice(0)
     timey = timeInterp.slice(0);
+    velocity = vInterp.slice(0)
     timeInterp.splice(0,timeInterp.length)
+    vInterp.splice(0,vInterp.length)
     xInterp.splice(0, xInterp.length)
     // console.log(x)
 
-    return [x,timey]
+    return [x,timey,velocity]
   }
 
 function Derivative(RK){
