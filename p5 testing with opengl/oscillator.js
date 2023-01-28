@@ -5,10 +5,13 @@ function createChart(xValues, yValues) {
     yValues=RK1[0]
     xValues=RK1[1]
     rounded = xValues.map(Math.round)
+    // Rounds the time values for aesthetic
     degreesArray = yValues.map(val => val*57.2957805);
+    // Converts the radians in yValues, to degrees
   
     // Get the context of the canvas element we want to select
     var ctx = document.getElementById("myChart").getContext("2d");
+    // Parents this to a div
   
     // Create a new chart using the chart.js library
     Chart.defaults.color = "#8c8c8c";
@@ -30,6 +33,7 @@ function createChart(xValues, yValues) {
       ,
       options: {
         scales: {
+            // Labels axis
           y: {
             title:{
               display:true,
@@ -60,9 +64,7 @@ function createChart(xValues, yValues) {
             frameValue = xValues[elementIndex]*24
             frame = Math.round(frameValue)
             console.log(frame)
-            // console.log(xValues[elementIndex]*240,yValues[elementIndex])
-            // var value = chart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
-            // console.log( clickedElementindex);
+            // THIS PART HANDLES THE CLICK INTERACTIVENESS
         }
     },
 
@@ -74,14 +76,17 @@ function createChart(xValues, yValues) {
     });
     return myChart
   }
+//   handles the creation of the line chart
   
-  // const algor = require('./simulating/Approximating Algorithms.js');
   function preloads1(sketchy){
       myFont= sketchy.loadFont('/Assets/HussarBold.otf');
       
   }
+//   Runs right before setup
   
   function setups1(sketchy) {
+    // To make this function correctly an attribute of the p5 canvas, I have to give it a function as a parameter,
+    // so to be lazy, I just dropped everything in this nonsense function, and returned it. 
     function moewklhjlsad() {
       
   
@@ -194,11 +199,7 @@ function createChart(xValues, yValues) {
   
   function windowResized(sketchy,width) {
     height = width
-    // if screensize less than 900px, then double height and width
-  
-    // width = document.querySelector('.fixed-width-div').offsetLeft;
-    // height = width;
-    // height = document.querySelector('.fixed-width-div').offsetHeight;
+
     console.log(width,height)
     
     sketchy.velocitySlider.style('top', `${sketchy.canvas.offsetTop +(445/500)*height}px`);
@@ -209,25 +210,22 @@ function createChart(xValues, yValues) {
     sketchy.lengthSlider.style('left', `${sketchy.canvas.offsetLeft + (255/500)*width}px`);
     sketchy.dragSlider.style('left', `${sketchy.canvas.offsetLeft + (80/500)*width}px`);
     sketchy.thetaSlider.style('left', `${sketchy.canvas.offsetLeft + (72/500)*width}px`);
-  
+    // Repositions the sliders to match the location in the window
     sketchy.currCamera.setPosition(0, 0, 50);
   }
   
   function restart(){
     frame = 0
     heat = 0;
+    // Non-native p5 function, I use this
   }
   
   
   function updateSim(sketchy){
+    // same reason as setups for weird function return logic
     function meowmeowwoof(){
       RK = RK4(sketchy.thetaSlider.value(),sketchy.velocitySlider.value(),time,stepSize,A,B(0,sketchy.dragSlider.value()),C,D,zerothOrderParam(sketchy.lengthSlider.value()),firstOrderParam);
-      // const work = async () => {
-      //   await sleep(1000)
-      //   //code
-      //   }
-      // // sleep(1000);
-      // work;
+
       drag = sketchy.dragSlider.value()
       t_0 = sketchy.thetaSlider.value()
       RKx = RK[0].slice();
@@ -242,6 +240,7 @@ function createChart(xValues, yValues) {
     return meowmeowwoof
       
   }
+//   handles the recalculation of the simulation and reconstructs the chart
   
   
   function drawy(sketchy) {
@@ -284,6 +283,7 @@ function createChart(xValues, yValues) {
             
     
         }
+        // Above handles the pendulum's graphics itself, and displacement
         else{
             frame = 0;
         }
@@ -293,6 +293,7 @@ function createChart(xValues, yValues) {
         sketchy.velocitySlider.changed(updateSim(sketchy));
         sketchy.dragSlider.changed(updateSim(sketchy));
         sketchy.lengthSlider.changed(updateSim(sketchy));
+        // checks for interactions with the slider to update the sim
   
   
   
@@ -310,6 +311,7 @@ function createChart(xValues, yValues) {
         sketchy.text( "Drag: " + sketchy.dragSlider.value(), -20,  22);
         sketchy.text("Pendulum Length: " + sketchy.lengthSlider.value() + "m", 1,  16);
         sketchy.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value()/(9.8/sketchy.lengthSlider.value())))/10, 1,  - 21);
+        // Handles the labels on the sliders, keeping them matching the slider values
 
 
 

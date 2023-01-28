@@ -39,19 +39,21 @@ new p5(s1);
 var s2 = function( sketch ) {
   sketch.preload = preloads1(sketch);
   sketch.setup = function() {
-  sketch.textFont(myFont);    
-   let canvas2 = sketch.createCanvas(150, 500);
-   canvas2.parent("barcharts")
-  //  canvas2.position(600,0);
-  //  console.log(RK[2])
-  //  console.log(heat)
-  heat = 0
+    sketch.textFont(myFont);    
+    let canvas2 = sketch.createCanvas(150, 500);
+    canvas2.parent("barcharts")
+
+    heat = 0
    
- }
+    }
  sketch.draw = function() {
+  // Big uses here is to calculate energy
+
+
+  // GPE
   heightPendulum = pendulum_length*(Math.cos(RK[0][frame])-1)
   GPE = -9.8*heightPendulum
-  
+  // old heat code, to be restored?
   if (frame == 1){
     heat = drag*Math.abs(RK[2][0])*(frame/24)
     // mass of pendulum
@@ -65,19 +67,22 @@ var s2 = function( sketch ) {
   }
   velocity =RK[2][frame]
   TE=-9.8*pendulum_length*(Math.cos(RK[0][0])-1)+1.2*pendulum_length**2*RK[2][0]**2
+  // Current heat method relies on indirect calculation from the total energy
 
 
   KE = 1.2*(pendulum_length**2)*(velocity**2)
-  // KE = TE-GPE-(heat)
+  // (1/2)*I*w^2
+
   if (KE<0){
     KE=0
   }
+  // Stops weird bouncing of KE bug 
   
-  // console.log(GPE+KE+heat*2)
   heat = TE-GPE-KE
   if (drag ==0){
     heat = 0
   }
+  // B/c of indirect calculation, errors between KE and GPE cause small leftovers, so I hid the bug
 
   heatColor = "#ffff00"
   KEColor = "#00bfff"
@@ -95,6 +100,7 @@ var s2 = function( sketch ) {
     GPEColor="#006400"
 
   }
+  // Handles the changing of colors to indicate the hitting of max values
   // Stop the KEbar and Heat bar from overflowing, istead change the color when it reaches the top to indicate it
   
   
@@ -104,38 +110,37 @@ var s2 = function( sketch ) {
   sketch.textSize(30);
   sketch.text("Energy",10,70)
   sketch.textSize(20);
+  // Energy title
   
   
 
   
   sketch.strokeWeight(1);
   sketch.stroke("#0060df");
-
-
   sketch.fill(GPEColor)
    sketch.rect(0, 450, 50,-GPE );
+  //  GPE Rectangle^
    
 
    sketch.fill(KEColor)
    sketch.rect(50,450,50,-(KE))
    sketch.fill(heatColor)
    sketch.rect(100, 450, 50,-heat );
+  //  Heat Rectangle ^^
 
 
 
-   
-
-   
-
-   sketch.fill(GPEColor)
-   
+  
+   sketch.fill(GPEColor) 
    sketch.noStroke()
    sketch.text("GPE",2,475)
    sketch.textSize(20);
+
    sketch.fill(KEColor)
    sketch.text("KE",60,475)
    sketch.fill(0,255,0)
    sketch.textSize(15);
+   
    sketch.fill(heatColor)
    sketch.text("HEAT",105,473)
    
