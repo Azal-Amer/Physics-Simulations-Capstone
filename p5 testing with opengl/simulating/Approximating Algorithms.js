@@ -8,23 +8,31 @@ function zerothOrderParam(string_length){
   return outputParam
   
 }
+// Let's you enclose the zeroth derivative in a function
+
 function firstOrderParam(v){
   return v ;
 }
+// Let's you enclose the first derivative in a function
 function firstOrder(v_0,x_0,h){
     let x_1=h*v_0+x_0
     return x_1
   }
+  // Evaluates the first order of the diffEQ approximation according to the input params
+
 function secondOrder(v_0,x_1,h,b,a,c,d,t,zerothOrderParam,firstOrderParam){
       const slope = (d(t)-b(t)*firstOrderParam(v_0)-c(t)*zerothOrderParam(x_1))/a(t);
 
       const v_1= h*slope+v_0;
+      
       return v_1
   }
+  // Evaluates the second order of the diffEQ approximation according to the input params
 function RK_weighting(v){
       const v_weighted = 1/6*(v[0]+2*v[1]+2*v[2]+v[3])
       return v_weighted
   }
+  // Weighs the first derivative using the RK4 technique
 function euler(x_0,v_0,iterations,h,a,b,c,d,zerothOrderParam,firstOrderParam){
     const x = [];
     const times = [];
@@ -41,6 +49,7 @@ function euler(x_0,v_0,iterations,h,a,b,c,d,zerothOrderParam,firstOrderParam){
     }
     return [x,times];
   }
+  // Combines all the above functions to approximate a standard second order diffeq using Eulers method
   function RK4(x_0,v_0,iterations,h,a,b,c,d,zerothOrderParam,firstOrderParam){
     // console.log(x_0,v_0,iterations,h)
     // console.log(a,b,c,d,zerothOrderParam,firstOrderParam)
@@ -109,6 +118,7 @@ function Derivative(RK){
   return [derivative,timew]
 
 }
+// Input a list, output the derivative of that list, length of (n-1)
 function Smoothery(RK1){
   velocity=Derivative(Derivative(RK1))[0]
   // console.log(velocity)
@@ -136,6 +146,8 @@ function Smoothery(RK1){
   return [x,y]
 
 }
+// My attempt at clever interpolation, trying to retain points with high acceleration values, a
+// and drop ones with values below a tolerance
 function Smoother(RK){
   let x=RK[0].slice(0);
   let y=RK[1].slice(0);
@@ -154,4 +166,5 @@ function Smoother(RK){
   xInterp.splice(0, xInterp.length)
   return [y,x]
 }
+// Literally just interpolates the input lists
 
