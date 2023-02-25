@@ -5,7 +5,17 @@
 function A(t){
     return 1;
 }
-
+function getInstanceById(id) {
+    const p5Instances = window['p5Instances'] || [];
+    for (let i = 0; i < p5Instances.length; i++) {
+      const instance = p5Instances[i];
+      const element = instance._elements.find(el => el.elt.id === id);
+      if (element) {
+        return element.elt;
+      }
+    }
+    return null;
+  }
 function constantB(){
     return drag
 }
@@ -25,8 +35,20 @@ function B(t,drag){
 function C(t){
     return 1;
 }
-function D(t){
-    return 0;
+function D(Amplitude=0,frequency=0){
+    if (Amplitude==0 || frequency==0){
+        function outputDriver(t){
+            return 0
+        }
+        return outputDriver
+
+    }
+    else{
+        function outputDriver(t){
+            return Amplitude*Math.sin(frequency*t);
+        }
+        return outputDriver
+    }
 }
 
 

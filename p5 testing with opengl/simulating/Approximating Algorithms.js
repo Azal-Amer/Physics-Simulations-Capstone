@@ -21,6 +21,14 @@ function firstOrder(v_0,x_0,h){
   // Evaluates the first order of the diffEQ approximation according to the input params
 
 function secondOrder(v_0,x_1,h,b,a,c,d,t,zerothOrderParam,firstOrderParam){
+  // h is the step size
+  // b is the coefficient on the first derivative
+  // a is the coefficient on the second derivative
+  // c is the coefficient on the zeroth derivative
+  // d is the driving force
+  // t is the time
+  // zerothOrderParam is the function that returns the zeroth derivative
+  // firstOrderParam is the function that returns the first derivative
       const slope = (d(t)-b(t)*firstOrderParam(v_0)-c(t)*zerothOrderParam(x_1))/a(t);
 
       const v_1= h*slope+v_0;
