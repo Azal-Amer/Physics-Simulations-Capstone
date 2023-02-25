@@ -157,7 +157,7 @@ function setups1(sketchy) {
     sketchy.lengthSlider = sketchy.createSlider(.1, 25, pendulum_length, .1)
     sketchy.lengthSlider.style('position', 'absolute  ');
 
-    sketchy.amplitudeSlider = sketchy.createSlider(-5, 5, amplitude, 1)
+    sketchy.amplitudeSlider = sketchy.createSlider(-5, 5, amplitude, .5)
     sketchy.amplitudeSlider.style('position', 'absolute  ');
     sketchy.freqSlider = sketchy.createSlider(0, 10, 0, .25)
     sketchy.freqSlider.style('position', 'absolute  ');
@@ -182,6 +182,7 @@ function setups1(sketchy) {
     sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
     sketchy.pause = sketchy.createButton("⏯")
     sketchy.pause.style('position', 'absolute ');
+    
     sketchy.pause.style('top', `${height - 315}px`);
     sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 88}px`);
 
@@ -274,6 +275,10 @@ function windowResized(sketchy, width) {
 
   sketchy.freqSlider.style('top', `${sketchy.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
   sketchy.freqSlider.style('left', `${sketchy.canvas.offsetLeft + (255 / 500) * width}px`);
+  sketchy.reset.style('top', `${height - 360}px`);
+    sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
+    sketchy.pause.style('top', `${height - 315}px`);
+    sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 88}px`);
   // Repositions the sliders to match the location in the window
 
   sketchy.currCamera.setPosition(0, 0, 50);
