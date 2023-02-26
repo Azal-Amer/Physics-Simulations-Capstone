@@ -25,8 +25,8 @@ function createChart(xValues, yValues) {
       datasets: [{
         label: 'Displacement Graph  ',
         data: degreesArray,
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        borderColor: '#1566e4',
+        backgroundColor: '#1566e4',
+        borderColor: '#ffffff',
         borderWidth: 1,
         hoverOffset: 4,
         pointRadius: 5,
@@ -154,7 +154,7 @@ function setups1(sketchy) {
 
 
 
-    sketchy.lengthSlider = sketchy.createSlider(.1, 25, pendulum_length, .1)
+    sketchy.lengthSlider = sketchy.createSlider(1, 25, pendulum_length, 1)
     sketchy.lengthSlider.style('position', 'absolute  ');
 
     sketchy.amplitudeSlider = sketchy.createSlider(-5, 5, amplitude, .5)
@@ -182,9 +182,9 @@ function setups1(sketchy) {
     sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
     sketchy.pause = sketchy.createButton("⏯")
     sketchy.pause.style('position', 'absolute ');
-    
+
     sketchy.pause.style('top', `${height - 315}px`);
-    sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 88}px`);
+    sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 85}px`);
 
     sketchy.reset.mousePressed(restart);
     sketchy.reset.style('border-radius', 6)
@@ -198,8 +198,8 @@ function setups1(sketchy) {
     sketchy.pause.style('border-radius', 6)
     sketchy.pause.style('background-color', '#0060df')
     sketchy.pause.style('color', '#ffffff')
-    sketchy.pause.style('padding', '7px 13px')
-    sketchy.pause.style('font-size', '16px')
+    sketchy.pause.style('padding', '3px 10px')
+    sketchy.pause.style('font-size', '30px')
     sketchy.pause.style('font-family', "Hussar Bold")
 
 
@@ -276,9 +276,9 @@ function windowResized(sketchy, width) {
   sketchy.freqSlider.style('top', `${sketchy.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
   sketchy.freqSlider.style('left', `${sketchy.canvas.offsetLeft + (255 / 500) * width}px`);
   sketchy.reset.style('top', `${height - 360}px`);
-    sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
-    sketchy.pause.style('top', `${height - 315}px`);
-    sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 88}px`);
+  sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
+  sketchy.pause.style('top', `${height - 315}px`);
+  sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 85}px`);
   // Repositions the sliders to match the location in the window
 
   sketchy.currCamera.setPosition(0, 0, 50);
