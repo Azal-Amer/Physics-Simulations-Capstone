@@ -17,7 +17,16 @@ offsetBars=0;
 // 3. MAKE IT LOOK NICE- Have a checkbox to enable the driving stuff, which then changes the UI a bit, the current graph on the right
 // should be in a flexible div split into 3 rows, top is sum solution, second is homogenous solution, and bottom is driving force
 // On the top right of the p5 sketch should be the switch to make it happen 
-// 4. A Splash instruction menu?
+// 4. A Splash instruction menu?'
+
+
+
+
+// RK Instructions
+// RK[0] is the position array
+// RK[1] is the time array
+// RK[2] is the velocity array
+// RK[3] is the driving force over time array
 var s1 = function(sketch){
   // sketch=sketch
   sketch.preload = preloads1(sketch,500)
@@ -81,6 +90,7 @@ var energybarCharts = function( sketch ) {
     }
   
  sketch.draw = function() {
+  
   // Big uses here is to calculate energy
 
 

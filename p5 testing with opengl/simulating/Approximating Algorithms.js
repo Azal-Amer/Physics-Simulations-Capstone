@@ -108,7 +108,15 @@ function euler(x_0,v_0,iterations,h,a,b,c,d,zerothOrderParam,firstOrderParam){
     xInterp.splice(0, xInterp.length)
     // console.log(x)
 
-    return [x,timey,velocity]
+
+    // Calculating Driving Force values
+    // Plug in every value of timey into the function d(t), then save it to the array drivingForceVals
+    let drivingForceVals = []
+    for(let i=0;i<timey.length;i++){
+        drivingForceVals.push(d(timey[i]))
+    }
+
+    return [x,timey,velocity,drivingForceVals]
   }
 
 function Derivative(RK){

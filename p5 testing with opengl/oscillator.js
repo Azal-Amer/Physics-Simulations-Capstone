@@ -157,9 +157,9 @@ function pause(){
       sketchy.lengthSlider = sketchy.createSlider(.1,25,pendulum_length,.1)
       sketchy.lengthSlider.style('position', 'absolute  ');
 
-      sketchy.amplitudeSlider = sketchy.createSlider(0,5,amplitude,.5)
+      sketchy.amplitudeSlider = sketchy.createSlider(-5,5,amplitude,.5)
       sketchy.amplitudeSlider.style('position', 'absolute  ');
-      sketchy.freqSlider = sketchy.createSlider(0,20,0,.25)
+      sketchy.freqSlider = sketchy.createSlider(0,10,0,.25)
       sketchy.freqSlider.style('position', 'absolute  ');
       sketchy.freqSlider.id('freqSlider');
 
