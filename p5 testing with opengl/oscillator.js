@@ -1,6 +1,7 @@
 
 offsetSlider = 30
 let loop;
+let spring;
 function createChart(xValues, yValues) {
   console.log(xValues.length)
 
@@ -13,7 +14,9 @@ function createChart(xValues, yValues) {
   // Converts the radians in yValues, to degrees
 
   // Get the context of the canvas element we want to select
+
   var ctx = document.getElementById("myChart").getContext("2d");
+  ctx.clearRect(0, 0, width, height);
   // Parents this to a div
 
   // Create a new chart using the chart.js library
@@ -86,6 +89,7 @@ function preloads1(sketchy) {
 
 }
 function pause() {
+  console.log(loop)
   if (loop == true) {
     loop = false
     // We've been paused here
@@ -113,7 +117,7 @@ function setups1(sketchy) {
 
 
     var myCanvas = sketchy.createCanvas(width, width, sketchy.WEBGL);
-    myCanvas.parent('canvas-container');
+    myCanvas.parent('canvas-container')
     // myCanvas.position(200,100);
     angle = 0;
     time = 30;
@@ -281,10 +285,11 @@ function windowResized(sketchy, width) {
   sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 85}px`);
   // Repositions the sliders to match the location in the window
 
-  sketchy.currCamera.setPosition(0, 0, 50);
+  // sketchy.currCamera.setPosition(0, 0, 50);
 }
 
 function restart() {
+  spring = new Spring(length = 100, numLines = 50,x_i=0,y_i=150 ,thickness = 1, springHeight = 20)
   frame = 0
   heat = 0;
   // Non-native p5 function, I use this
@@ -309,6 +314,8 @@ function updateSim(sketchy) {
     frame = 0
     myChart.destroy()
     myChart = createChart(RKx, RKy);
+    spring = new Spring(length = 100, numLines = 50,x_i=0,y_i=150 ,thickness = 1, springHeight = 20);
+
 
   }
   sendSliderValues(sketchy)
@@ -316,7 +323,6 @@ function updateSim(sketchy) {
 
 }
 //   handles the recalculation of the simulation and reconstructs the chart
-
 
 function drawy(sketchy) {
 
@@ -358,8 +364,10 @@ function drawy(sketchy) {
 
 
     }
+    
     // Above handles the pendulum's graphics itself, and displacement
     else {
+      console.log(frame)
       frame = 0;
     }
 

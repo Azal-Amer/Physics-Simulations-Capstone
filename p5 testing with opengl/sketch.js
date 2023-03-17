@@ -18,7 +18,76 @@ offsetBars = 0;
 // should be in a flexible div split into 3 rows, top is sum solution, second is homogenous solution, and bottom is driving force
 // On the top right of the p5 sketch should be the switch to make it happen 
 // 4. A Splash instruction menu?
+
+class Spring {
+  createVector(x,y){
+    return {x:x,y:y}
+  }
+  map(value, min1, max1, min2, max2) {
+    // first, normalize the input value to a range between 0 and 1
+    const normalized = (value - min1) / (max1 - min1);
+    
+    // then, map the normalized value to the output range
+    const mapped = normalized * (max2 - min2) + min2;
+    
+    // return the mapped value
+    return mapped;
+  }
+  constructor(length = 200, numLines=5,x_i=width/2,y_i=height/2,thickness=10,springheight = 10) {
+    
+    // Initialize start and end points
+    x_i = length/2 + x_i
+    y_i = y_i*2
+    this.start = this.createVector(x_i - length / 2, y_i / 2);
+    console.log(this.start)
+    this.end = this.createVector(x_i / 2 + length / 2, y_i / 2);
+    this.current_end =this.createVector(x_i / 2 + length / 2, y_i / 2);
+    this.thickness = thickness
+    
+    // Initialize properties of the zigzag
+    this.numLines = numLines;
+    this.lineLength =  springheight;
+    
+    // Initialize an array to hold the points of the zigzag
+    this.points = [];
+    for (let i = 0; i < numLines; i++) {
+      const x = this.map(i, 0, numLines - 1, this.start.x, this.current_end.x);
+      const y = this.start.y + ((i % 2 === 0) ? this.lineLength : -this.lineLength);
+      this.points.push(this.createVector(x, y));
+    }
+  }
+  
+  draw(sketch) {
+    // Draw the zigzag on the canvas
+    sketch.beginShape();
+    sketch.fill(0,0,0,0)
+    sketch.strokeWeight(this.thickness)
+    sketch.vertex(this.start.x, this.start.y);
+    for (let i = 0; i < this.numLines; i++) {
+      sketch.vertex(this.points[i].x, this.points[i].y);
+    }
+    sketch.vertex(this.current_end.x, this.current_end.y);
+    sketch.endShape();
+  }
+  
+  move(displacement) {
+    // Move the endpoint
+    this.current_end.x = this.end.x+displacement;
+    
+    // Recalculate the position of all the other points
+    for (let i = 0; i < this.numLines; i++) {
+      const x = this.map(i, 0, this.numLines - 1, this.start.x, this.current_end.x);
+      const y = this.start.y + ((i % 2 === 0) ? this.lineLength : -this.lineLength);
+      this.points[i] = this.createVector(x, y);
+    }
+    
+  }
+
+
+
+}
 var s1 = function(sketch) {
+  
   // sketch=sketch
   sketch.preload = preloads1(sketch, 500)
   sketch.setup = setups1(sketch)
@@ -59,7 +128,60 @@ var s1 = function(sketch) {
 
 
 }
-oscilator = new p5(s1);
+var springSketch = function(sketch) {
+  
+  // sketch=sketch
+  sketch.preload = preloads1(sketch, 500)
+  sketch.setup = setupSpring(sketch)
+  sketch.draw = springDrawy(sketch)
+  sketch.windowResized = function() {
+    console.log('sd')
+    offsetSlider = 30
+    height = width
+    // if screensize less than 900px, then double height and width
+
+    // width = document.querySelector('.fixed-width-div').offsetLeft;
+    // height = width;
+    // height = document.querySelector('.fixed-width-div').offsetHeight;
+    console.log(width, height)
+
+
+    sketch.velocitySlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
+    sketch.velocitySlider.style('top', `${sketch.canvas.offsetTop + (((445 - offsetSlider)) / 500) * height}px`);
+
+    sketch.lengthSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
+    sketch.lengthSlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
+
+    sketch.thetaSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
+    sketch.thetaSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+
+    sketch.dragSlider.style('top', `${sketch.canvas.offsetTop + ((445 - offsetSlider) / 500) * height}px`);
+    sketch.dragSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+    sketch.amplitudeSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
+    sketch.amplitudeSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+    sketch.freqSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
+    sketch.freqSlider.style('left', `${sketch.canvas.offsetLeft + (255 / 500) * width}px`);
+    sketch.text("Spring Constant: " + Math.round(sketchy.lengthSlider.value()) + "N/m", 155, 250);
+
+    sketch.text("Initial Velocity: " + sketchy.velocitySlider.value()/10 + "m/s",155, 310);
+    sketch.text("Displacement: " + Math.round(sketchy.thetaSlider.value())/10 + "m", -15, 250)
+    sketch.text("Drag: " + sketchy.dragSlider.value(), -15, 310);
+    sketch.text("Driver Amplitude: " + sketchy.amplitudeSlider.value() + "N", -15, 370);
+    sketch.text("Driver Frequency: " + sketchy.freqSlider.value(), 155, 370);
+
+
+    sketch.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 100, -21);
+
+    // sketch.currCamera.setPosition(0, 0, 50);
+  }
+
+
+}
+
+
 function receiveSliderValues(event) {
   // Check if the message is for slider values
   if (event.data.type === 'sliderValues') {
@@ -188,7 +310,6 @@ var energybarCharts = function(sketch) {
     energyIndicatorSize = 20
     if ((Math.round(KE).toString().length > 3)) {
       energyIndicatorSize = 20 - (Math.round(KE).toString().length) - 1
-      console.log('smaller')
     }
     else {
       energyIndicatorSize = 20
@@ -208,7 +329,6 @@ var energybarCharts = function(sketch) {
     energyIndicatorSize = 20
     if ((Math.round(KE).toString().length > 3)) {
       energyIndicatorSize = 20 - (Math.round(KE).toString().length) - 1
-      console.log('smaller')
     }
     else {
       energyIndicatorSize = 20
@@ -266,8 +386,32 @@ var energybarCharts = function(sketch) {
 
   }
 };
-new p5(energybarCharts);
 
-// Ideal pivot point is at 10
+// spring = new p5(springSketch)
+
+new p5(energybarCharts);
+// oscilator = new p5(s1)
+// // oscilator = 0
+// oscilator.remove();
+springSketch = new p5(springSketch)
+// springSketch.parent("canvas-container");
+// const toggleButton = document.getElementById("toggleButton");
+// const sketchContainer = document.getElementById("sketchContainer");
+// currentSketch=1
+// toggleButton.addEventListener("click", function() {
+//   // toggle the currentSketch variable between s1 and springSketch
+//   if (currentSketch === 1) {
+//     springSketch.remove()
+//     oscilator = new p5(s1)
+//     currentSketch = 0
+//   } else {
+//     oscilator.remove()
+//     springSketch = new p5(springSketch)
+//     currentSketch = 1
+//   }
+//   // remove the old sketch from the container
+
+// });
+
 
 
