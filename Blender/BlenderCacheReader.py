@@ -8,8 +8,10 @@ from math import cos,sin,pi
 from numpy import arange,array,empty
 #how many cubes you want to add
 
-cache = open("/Users/amer_/Documents/GitHub/Physics-Simulations-Capstone/globalPositions.json")
+cache = open("/Users/amer_/Documents/GitHub/Physics-Simulations-Capstone/Coupled Oscilation Site/Python/coupled-oscillation.ipynb")
 worlds = {}
+
+
 black = bpy.data.materials.new(name="Red")
 black.diffuse_color = (1, 1, 0,1)
 white = bpy.data.materials.new(name="Blue")
@@ -23,12 +25,12 @@ print(count)
 FrameCount = worlds['FrameCount']
 
 #D = bpy.data
-#bpy.ops.object.select_all(action="SELECT")
-#bpy.ops.object.delete() 
+bpy.ops.object.select_all(action="SELECT")
+bpy.ops.object.delete() 
 
-#for n in range(0,count):    
-#    coordinates = (worlds["frames"][0][n])
-#    bpy.ops.mesh.primitive_cube_add(location=((coordinates)/4+10*n-5,0,0),size = 2)
+for n in range(0,count):    
+    coordinates = (worlds["frames"][0][n])
+    bpy.ops.mesh.primitive_cube_add(location=((coordinates)/4+10*n-5,0,0),size = .5)
 bpy.ops.object.select_all(action="SELECT")
 
 #for i in range(int(FrameCount/skip)):
@@ -46,9 +48,9 @@ for object in bpy.context.selected_objects:
     y_cord =[]
     z_cord = []
     for j in range(FrameCount):
-        x_cord.append((worlds['frames'][j][n])+20*n-5)
+        x_cord.append(1*n)
         y_cord.append(0)
-        z_cord.append(0)
+        z_cord.append((worlds['frames'][j][n]))
 
     frames = range(1, FrameCount-1)
     # some action
