@@ -18,24 +18,26 @@ function RK_weighting(v){
     return v_weighing
 }
 function secondOrder(v_0,x_1,h,b,a,c,d,zerothOrderParam,firstOrderParam,constant=0,t=0){
+    // console.log('constant',constant)
+    // console.log('t',t)
     let slope = (d(t)-b*firstOrderParam(v_0)-c*zerothOrderParam(x_1)-constant)/a
     // print all inputs
     let v_1= h*slope+v_0
     if(debugging==true){
-    console.log('v_0:',v_0)
-    console.log('x_0:',x_0)
-    console.log('h:',h)
-    console.log('b:',b)
-    console.log('a:',a)
-    console.log('c:',c)
-    console.log('d:',d)
-    console.log('zerothOrderParam:',zerothOrderParam)
-    console.log('firstOrderParam:',firstOrderParam)
-    console.log('constant:',constant)
-    
+        console.log('v_0:',v_0)
+        console.log('x_0:',x_0)
+        console.log('h:',h)
+        console.log('b:',b)
+        console.log('a:',a)
+        console.log('c:',c)
+        console.log('d:',d)
+        console.log('zerothOrderParam:',zerothOrderParam)
+        console.log('firstOrderParam:',firstOrderParam)
+        console.log('constant:',constant)
+        
 
-    console.log('slope:',slope)
-    console.log('v_1:',v_1)
+        console.log('slope:',slope)
+        console.log('v_1:',v_1)
     }
     
     
@@ -45,7 +47,7 @@ function calculateStep(x_0,v_0,iteration,h,a,b,c,d,zerothOrderParam,firstOrderPa
 
     // # print all inputs
     let time = h*iteration
-    let v_1 = secondOrder(v_0,x_0,h,b,a,c,d,zerothOrderParam,firstOrderParam,t=time,constant = constant)
+    let v_1 = secondOrder(v_0,x_0,h,b,a,c,d,zerothOrderParam,firstOrderParam,constant = constant,t=time)
     let x_1 = firstOrder(v_1,x_0,h)
     return [v_1,x_1]
 
@@ -76,30 +78,11 @@ class Oscillator {
         // coefficient on solution term
         this.iteration = iteration;
         this.n = n;
-        
         this.mass = mass;
-        this.v_Euler = [v_0];
-        this.x_Euler = [x_0];
+
         
     }
-    // calculateEuler(K, B, dt = 0, x = 'null', v = 'null') {
 
-    //     let solutionTerms = coefficientIsolater(x, K, this.n);
-    //     let firstOrderTerms = coefficientIsolater(v, B, this.n);
-
-    //     let constant = firstOrderTerms[1] + solutionTerms[1];
-
-    //     let firstOrderCoefficient = firstOrderTerms[0];
-    //     let solutionCoefficient = solutionTerms[0];
-    //     // # Solution coefficient should in the n=1 case, just be the first oscillators spring constant
-
-    //     let newPositions = calculateStep(this.x_Euler[this.x_Euler.length - 1], this.v_Euler[this.v_Euler.length - 1], this.iteration, dt, this.mass, firstOrderCoefficient, solutionCoefficient, this.drivingForce, zerothOrderParam, firstOrderParam, constant = constant);
-    //     // # Now I need to get calculate Euler running
-
-    //     this.x_Euler.push(newPositions[1]);
-    //     this.v_Euler.push(newPositions[0]);
-    //     this.iteration += 1;
-    // }
     calculateRK4(K, B, dt = 0, x = 'null', v = 'null') {
         // # Input X is a 1XN vector representing the current last known position of the oscillators, temp value
         // # Input V is a (1-4)XN vector representing the current last known velocity of the oscillators, temp value
@@ -182,13 +165,13 @@ class Oscillator {
     // # that way we calculate the next position all at once by stepping our weighted velocity matrix by one, and then multiplying it by the step
 }
 
-function RKCalculator(time, dt) {
+function RKCalculator(time, dt,N) {
     const iterations = Math.floor(4 * time / dt);
     for (let i = 0; i < iterations; i++) {
-        for (let j = 0; j < n; j++) {
+        for (let j = 0; j < N; j++) {
             oscillator_List[j].calculateRK4(K, B, dt = dt,x = x_current,v=v_current);
-            x_currentEuler[j] = oscillator_List[j].x_Euler[-1];
-            v_currentEuler[j] = oscillator_List[j].v_Euler[-1];
+            // x_currentEuler[j] = oscillator_List[j].x_Euler[-1];
+            // v_currentEuler[j] = oscillator_List[j].v_Euler[-1];
             // console.log('calculated value', oscillator_List[0].x_i[-1]);
             // console.log('captured value', x_current);
         }

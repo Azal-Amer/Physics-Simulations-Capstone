@@ -14,17 +14,31 @@
 	<script src="utilities.js"></script>
 	<script src="approximation.js"></script>
 	<script src="doingthething.js"></script>
-	<style>
-		.flex-column {
-			display: flex;
-			flex-direction: column;
-		}
-	</style>
+	<script src="sketchAssets.js"></script>
+	<script src="sketch.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+	
 	<div class="flex-column">
-		<div id="canvas-container"></div>
-		<div id="chart-container"></div>
+		<div id="coupled-canvas-container"></div>
+		<div id="grid-container">
+			<div class="grid-item" id="slider1">
+				<p id="slider1-value"></p>
+			</div>
+			<div class="grid-item" id="slider2">
+				<p id="slider2-value"></p>
+			</div>
+			<div class="grid-item" id="slider3">
+				<p id="slider3-value"></p>
+			</div>
+			<div class="grid-item" id="slider4">
+				<p id="slider4-value"></p>
+
+			</div>
+		</div>
+		
 	</div>
 </body>
 </html>

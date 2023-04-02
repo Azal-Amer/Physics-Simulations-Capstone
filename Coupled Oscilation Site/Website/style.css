@@ -1,0 +1,17 @@
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, .5fr);
+    grid-template-rows: repeat(2, .5fr);
+    grid-gap: 5px;
+  }
+  
+  .grid-item {
+    /* background-color: #eee; */
+    padding: 5px;
+  }
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  margin: center;
+}

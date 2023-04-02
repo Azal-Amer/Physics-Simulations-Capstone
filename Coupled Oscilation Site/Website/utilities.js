@@ -129,12 +129,17 @@ function coefficientIsolater(vector, square, n) {
 
 const focusRow = square[n];
 
+
 const vectorWithoutN = vector.slice(0, n).concat(vector.slice(n + 1));
 const focusRowWithoutN = focusRow.slice(0, n).concat(focusRow.slice(n + 1));
 
 //   if the vectorWithoutN is a 2d array, then transpose it
 
-  const constant = math.dot(vectorWithoutN, focusRowWithoutN);
+  let constanty = math.dot(vectorWithoutN, focusRowWithoutN);
+//   console.log(square)
+//   console.log('vector at ',n, ':',vector)
+//     console.log('focusRow at ',n, ':',focusRow)
+//     console.log('--------------')
   //   This above is the most expensive operation in the code
 
   if(debugging == true){
@@ -155,7 +160,7 @@ const focusRowWithoutN = focusRow.slice(0, n).concat(focusRow.slice(n + 1));
     console.log('---------\n')
   }
 
-  return [coefficient, constant];
+  return [coefficient, constanty];
 }
 
 
