@@ -33,6 +33,19 @@ function generalKMatrixConstructor(links,n){
   return K
 }
 
+function KMatrixConstructor(links,n,spring_constants){
+  K=nj.zeros([n, n]).tolist();
+  for (let i = 0; i < links.length; i++) {
+    j = links[i][0]
+    k = links[i][1]
+    K[j][j]+=spring_constants
+    K[j][k]+=-spring_constants
+    K[k][j]+=-spring_constants
+    K[k][k]+=spring_constants
+  }
+  
+  return K
+}
 
 function latexUpdater(matrix){
   let latexCode = "\\begin{equation*}\n\\begin{bmatrix}\n";

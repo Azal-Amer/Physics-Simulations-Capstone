@@ -3,6 +3,7 @@ function updateObjectIdentities(){
     rectangles[i].n = i
   }
 }
+
 function mousePressed() {
     found = false;
     pings = 0;
@@ -19,7 +20,8 @@ function mousePressed() {
           // rectangles.push(currentRectangle);
 
           mouseDragged = function() {
-          rectangles[i].x = mouseX - offsetX;
+          rectangles[i].x_i = mouseX - offsetX;
+          rectangles[i].move(0);
           rectangles[i].y = mouseY - offsetY;
           
         }
@@ -47,7 +49,7 @@ function mousePressed() {
                   linkToLatex(links,rectangles.length)
                 }
 
-                linksClass.push(new Links(rectangles[i],rectangles[selection],2,1,5));
+                linksClass.push(new Links(rectangles[i],rectangles[selection],40/(spring_constants),1,5));
 
                 selection = NaN;
               }
@@ -95,70 +97,92 @@ function mousePressed() {
         rect(startPoint.x, startPoint.y, mouseX - startPoint.x, mouseY - startPoint.y);
       }
     }
-  }
-  
-  function mouseReleased() {
-    let endFound= false
-    for (let i = 0; i <rectangles.length; i++) {
-    if (mouseX >= rectangles[i].x && mouseX <= rectangles[i].x + rectangles[i].width &&
-      mouseY >= rectangles[i].y && mouseY <= rectangles[i].y + rectangles[i].height) {
-        endFound = true;
-        break;
-      }
-      else{
-        endFound = false;
-      }
-    }
-    if (startPoint !== null && !found && construction && endFound==false) {
-      // calculate the area of the 
-      length = mouseX - startPoint.x
-      height = mouseY - startPoint.y
-      if(length*height>500){
-        box = new Box(startPoint.x,startPoint.y,rectangles.length,mouseX - startPoint.x,mouseY - startPoint.y)
-      rectangles.push(box);
-      linkToLatex(links,rectangles.length)
-      updateObjectIdentities()
-      
-      }
-      
-    }
-    mouseDragged = null;
-  }
-  
-  function redraw() {
-    background(255);
-    if(construction){
-    for (let i = 0; i < rectangles.length; i++) {
-      rect(rectangles[i].x, rectangles[i].y, rectangles[i].w, rectangles[i].h);
-    }}
-  }
-  
-  function keyPressed() {
-    if (key === 'r' || key === 'R') {
-      rectangles = [];
-      links = [];
-      linksClass = [];
-      background(255);
-      linkToLatex(links,rectangles.length)
-      construction = true
-      
-    }
-    if (key === 'c' || key === 'C') {
-      construction = !construction; // toggle the boolean value
-      selection = NaN
-    
-  }
-    if(key == 'p'){
-      console.log(links)
-    }
-    
-    if((key =='d' ||key == 'D') && !isNaN(selection)){
-      deleteNode(selection)
-      selection = NaN
+}
 
-      // rectangles.splice(selection,1)
-  //     we need to go into the links of each box, and through all the links list, and delete anything with this box in it
-      
+function mouseReleased() {
+  let endFound= false
+  for (let i = 0; i <rectangles.length; i++) {
+  if (mouseX >= rectangles[i].x && mouseX <= rectangles[i].x + rectangles[i].width &&
+    mouseY >= rectangles[i].y && mouseY <= rectangles[i].y + rectangles[i].height) {
+      endFound = true;
+      break;
+    }
+    else{
+      endFound = false;
     }
   }
+  if (startPoint !== null && !found && construction && endFound==false) {
+    // calculate the area of the 
+    length = mouseX - startPoint.x
+    height = mouseY - startPoint.y
+    if(length*height>500){
+      box = new Box(startPoint.x,startPoint.y,rectangles.length,mouseX - startPoint.x,mouseY - startPoint.y)
+    rectangles.push(box);
+    linkToLatex(links,rectangles.length)
+    updateObjectIdentities()
+    
+    }
+    
+  }
+  mouseDragged = null;
+}
+
+function redraw() {
+  background(255);
+  if(construction){
+  for (let i = 0; i < rectangles.length; i++) {
+    rect(rectangles[i].x, rectangles[i].y, rectangles[i].w, rectangles[i].h);
+  }}
+}
+let tempLinks = []
+function keyPressed() {
+  if (key === 'r' || key === 'R') {
+    rectangles = [];
+    links = [];
+    linksClass = [];
+    oscilator_List=[];
+    background(255);
+    linkToLatex(links,rectangles.length)
+    construction = true
+    
+  }
+  if (playground==true && (key === 'c' || key === 'C')) {
+    construction = !construction; // toggle the boolean value
+    selection = NaN
   
+}
+
+  if((key =='d' ||key == 'D') && !isNaN(selection)){
+    deleteNode(selection)
+    selection = NaN
+
+    // rectangles.splice(selection,1)
+//     we need to go into the links of each box, and through all the links list, and delete anything with this box in it
+    
+  }
+  if(key == 'p' || key == 'P'){
+    playground = !playground
+    if(tempLinks !=links){
+      simulateTheThing()
+
+    }
+  }
+  if((key == 's' || key == 'S')&& playground== false){
+    simulateTheThing()
+    frame = 0
+
+  }
+}
+function simulateTheThing(){
+  tempLinks = links
+    K = KMatrixConstructor(links,rectangles.length,spring_constants)
+    // third input is spring constant
+    M = []
+    for(let i = 0; i<rectangles.length; i++){
+      M.push(rectangles[i].mass)
+    }
+    oscilator_List = Simulator(rectangles.length,false,M,K,-10)
+    console.log(oscilator_List)
+    
+
+}
