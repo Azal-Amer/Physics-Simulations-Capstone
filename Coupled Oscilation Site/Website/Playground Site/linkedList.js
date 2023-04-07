@@ -16,6 +16,11 @@ function includesButBetter(row){
   function deleteNode(index) {
     // Remove the node from the list
     rectangles.splice(index, 1);
+    initialConditions.splice(index, 1);
+    driverParameters.splice(index,1)
+    anchorStates.splice(index, 1);
+    oscillator_List=[]
+
     updateObjectIdentities()
   
     // Iterate through the links and update the indices

@@ -12,16 +12,19 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="./Font Assets/stylesheet.css">
 	
   <script src = "objectClasses.js"></script>
-  <script src = "/Algorithms/approximation.js"	></script>
-  <script src = "/Algorithms/utilities.js"	></script>
-  <script src = "/Algorithms/doingthething.js"	></script>
+  
+  <script src = "./Algorithms/approximation.js"	></script>
+  <script src = "./Algorithms/utilities.js"	></script>
+  <script src = "./Algorithms/doingthething.js"	></script>
+  
   
 
 </head>
 <body>
-		<p>
+		<!-- <p>
 			-press r to reset
 			<br>
 			- Press 'c' to toggle between "Construct Mode" and "Linkage Mode"
@@ -36,20 +39,58 @@
 			- click the white space to unselect 
 			<br>
 			- In any mode, press 'r' to reset
-		</p>
+		</p> -->
 	</div>
-	<p>Here is a matrix:</p>
-	<div class="flex-row">	
-		<div id="playground-canvas-container"></div>
-		<div id="matrix"></div>
-		
+	<div class = "flex-row">
+		<div class = "flex-column" id = 'matrixdude'>
+			<div class = "canvas" id="playground-canvas-container"></div>
+			
+			<div id = 'global-conditions'>
+				<div class = "flex-rowy" id = 'globalSliders'>
+					<p id = 'heading-2' >Global Conditions</p>
+					<div class = flex-columny>
+						<p id="springSlider-value"></p>
+						<div class = 'globalSlider' id = "springSlider"></div>
+					</div>
+					<div class = flex-columny>
+						<p id="dampeningSlider-value"></p>
+						<div class = 'globalSlider' id = "dampingSlider"></div>
+					</div>
+				</div>
+			</div>
+			<div class = 'separator'></div>
+			<div id = 'input-container'>
+				
+				<p id = 'heading-2'>Selected Conditions <br></br></p>
+				<div class = "flex-rowy">
+				
+					<div class = 'checkbox' id = "anchor-checkbox"></div>
+					<div id="grid-container">
+						
+						<div class="grid-item" id="slider1">
+							<p id="slider1-value"></p>
+						</div>
+						<div class="grid-item" id="slider2">
+							<p id="slider2-value"></p>
+						</div>
+						<div class="grid-item" id="slider3">
+							<p id="slider3-value"></p>
+						</div>
+						<div class="grid-item" id="slider4">
+							<p id="slider4-value"></p>
+						</div>
+					</div>
+		   		</div>
+			</div>
+		</div>
+		<div id="matrix" class = 'simulation-items'></div>
 	</div>
 	
-
 	<script src = 'matrix.js'></script>
 	<script src="userInteraction.js"></script>
 	<script src = "linkedList.js"></script>
 	<script src="sketch.js"></script>
+	<script src = "./Sliders/sliders.js"></script>
 </body>
 
 </html>

@@ -57,7 +57,7 @@ function calculateStep(x_0,v_0,iteration,h,a,b,c,d,zerothOrderParam,firstOrderPa
 }
 // Im not implementing Euler at this time
 class Oscillator {
-    constructor(x_0 = 0, v_0 = 0, spring_constant = 1, A = 1, mass = 1,  n = 1, iteration = 1,Drag = t => 0, drivingForce = t => 0,C = t => 0) {
+    constructor(x_0 = 0, v_0 = 0, spring_constant = 1, A = 1, mass = 1,  n = 1, iteration = 1,frequency = 1,amplitude = 1,Drag = t => 0, drivingForce = t => 0,C = t => 0) {
         this.x_h = [x_0];
         this.v_h = [v_0];
         // # Homogenous values, they are both lists containing the values of the inhomogenous values over time
@@ -74,11 +74,15 @@ class Oscillator {
         // drag
         this.drivingForce = drivingForce;
         // solution to diffeq expression, driving force
+        this.frequency = frequency;
+        this.amplitude = amplitude;
+
         this.C = C;
         // coefficient on solution term
         this.iteration = iteration;
         this.n = n;
         this.mass = mass;
+        this.anchor = false
 
         
     }
@@ -155,6 +159,12 @@ class Oscillator {
 
         
     }
+    calculateDriver(dt = 0) {
+        this.x_i.push(this.drivingForce(this.t));
+        x_current[this.n] = this.x_i[this.x_i.length - 1];
+        this.t+=dt
+        // 
+    }
     
     // # If we have calculated all the required velocities to weigh, we perform that action, then save the actual resulting x value of that 
     // # velocity to the object's self, we then also restart the velocity list to have it's first term be v_weighted, and start over
@@ -169,11 +179,18 @@ function RKCalculator(time, dt,N) {
     const iterations = Math.floor(4 * time / dt);
     for (let i = 0; i < iterations; i++) {
         for (let j = 0; j < N; j++) {
-            oscillator_List[j].calculateRK4(K, B, dt = dt,x = x_current,v=v_current);
-            // x_currentEuler[j] = oscillator_List[j].x_Euler[-1];
-            // v_currentEuler[j] = oscillator_List[j].v_Euler[-1];
-            // console.log('calculated value', oscillator_List[0].x_i[-1]);
-            // console.log('captured value', x_current);
+            if(oscillator_List[j].anchor == false){
+
+                oscillator_List[j].calculateRK4(K, B, dt = dt,x = x_current,v=v_current);
+            }
+
+            else{
+                if(i%4==0){
+                    oscillator_List[j].calculateDriver(dt = dt)
+                }
+                
+            }
+            // if the oscillator is an anchor, then the driver force becomes it's positional movement
         }
     }
 }

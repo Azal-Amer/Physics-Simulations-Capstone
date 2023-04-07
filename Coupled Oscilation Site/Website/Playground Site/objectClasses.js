@@ -21,26 +21,60 @@ class Links{
         }
         // We're checking which of the two boxes is further to the right
         // We want to draw the line from the right side of the left box to the left side of the right box
-        startX= startBox.x+startBox.width
-        endX = endBox.x
+        //  startX;
+        // let endX;
+        if(endBox.width>0){
+          endX = endBox.x
+        }
+        else{
+          endX = endBox.x+endBox.width
+        }
+        
+        if(startBox.width<0){
+          startX = startBox.x
+        }
+        else{
+          startX = startBox.x+startBox.width
+        }
+        
+
 
         // Y VALUES CALCULATION
+      
+      
+
         if(box1.y>box2.y){
-            topBox = box2
-            bottomBox = box1
+            topBox = structuredClone(box2)
+            bottomBox = structuredClone(box1)
         }
         else{
-            topBox = box1
-            bottomBox = box2
+            topBox = structuredClone(box1)
+            bottomBox = structuredClone(box2)
         }
+        if(topBox.height<0){
+          topBox.y = topBox.y-topBox.height
+          topBox.height = abs(topBox.height)
+        }
+        if(bottomBox.height<0){
+          bottomBox.y = bottomBox.y-bottomBox.height
+          bottomBox.height = abs(bottomBox.height)
+        }
+
+
+        // if the topbox has the negative height, just fork with it to fix it
+        
+
+
+
         // console log the topbox and bottom box's y values with labels
 
-        if(topBox.y+topBox.height>bottomBox.y+bottomBox.height){
+        if(topBox.y+abs(topBox.height)>bottomBox.y+abs(bottomBox.height)){
             // bottom box is smaller, so make aimedHeight the center of the bottom box
-            aimedHeight = (bottomBox.y+bottomBox.height/2)
+            aimedHeight = (bottomBox.y+abs(bottomBox.height)/2)
         } 
+
         else{
-            topBoxsBottom = topBox.y+topBox.height
+            topBoxsBottom = topBox.y+abs(topBox.height)
             bottomBoxsTop = bottomBox.y
             aimedHeight = (topBoxsBottom+bottomBoxsTop)/2
             // if the bottom of the higher box is higher than the top of the lower box, we want to aim for 
@@ -70,7 +104,7 @@ class Links{
       // return the mapped value
       return mapped;
     }
-    constructor(startBox, endBox,density=40/(spring_constants),thickness=1,springheight=5){
+    constructor(startBox, endBox,density=40,thickness=1,springheight=5){
         this.startBox = startBox
         this.endBox = endBox
 
@@ -86,7 +120,8 @@ class Links{
         
 
         this.thickness = thickness
-        this.density = density
+        this.densityRaw = density
+        this.density = density/(.25*(spring_constants+20))
         this.numLines = Math.round((width/density)-1);
         this.lineLength =  springheight;
 
@@ -133,8 +168,10 @@ class Links{
         
         beginShape();
         fill(0,0,0,0)
+        stroke(255,255,0)
+
         strokeWeight(this.thickness)
-        vertex(this.current_start.x, this.start.y);
+        vertex(this.current_start.x, this.current_start.y);
         for (let i = 0; i < this.numLines; i++) {
           vertex(this.points[i].x, this.points[i].y);
         }
@@ -150,7 +187,24 @@ class Links{
 
 
 }
+function drawGradientRect(x, y, w, h) {
+  // Create a custom fill function that interpolates between c1 and c2
+  // based on the horizontal position of the current pixel
+  c1 = color('#0060df');
+  c2 = color(0, 255, 255)
+  for (let i = x; i < x + w; i++) {
+    let pct = (i - x) / w;
+    let c = lerpColor(c1, c2, pct);
+    stroke(c);
+    line(i, y, i, y + h);
+  }
 
+  // Draw a border around the rectangle
+  noFill();
+  strokeWeight(4);
+  stroke('#0D00E0');
+  rect(x, y, w, h);
+}
 class Box {
     constructor(x, y, n, w, h) {
       this.x_i = x; // initial x position
@@ -161,14 +215,24 @@ class Box {
       this.width = w; // width of the box
       this.height = h; // height of the box
       this.links = [] //Who this box is connected to
-      this.mass = width*height/40000
+      this.mass = abs(this.width*this.height)/1000
       console.log(this.mass)
+      initialConditions.push([0,0])
+      driverParameters.push([0,0,0])
+      anchorStates.push(false)
+
     }
     move(delta) {
       this.x = this.x_i + delta;
     }
     draw() {
-      rect(this.x, this.y, this.width, this.height);
+      strokeWeight(3)
+      stroke('#0060df');
+
+      fill(0, 255, 255)
+      
+
+      drawGradientRect(this.x, this.y, this.width, this.height);
       
     }
   }

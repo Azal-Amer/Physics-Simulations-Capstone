@@ -1,20 +1,131 @@
 .flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  
+}
+ 
+  
+#playground-canvas-container {
+  flex: 1;
+  /* border: 4px solid black; */
+  border: 10px solid transparent;
+  border-image: radial-gradient(circle, black, transparent) 3;
+  /* border-radius: 15px; */
+  
+}
+  
+#matrix {
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  /* allow the contents to shrink */
+  min-width: 0;
+  /* enable shrinking of the div itself */
+  flex-shrink: 1;
+  /* include padding and borders in the width calculation */
+  box-sizing: border-box;
+  /* prevent image or video overflow */
+}
+.MathJax {
+  font-family: 'Hussar Bold Web Edition';
+  font-size: 50%;
+  text-align: center;
+  color:white
+
+}
+.flex-rowy {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#grid-container {   
+  display: grid;
+  grid-template-columns: repeat(2, .5fr);
+  grid-template-rows: repeat(2, .5fr);
+  grid-gap: 5px;
+}
+#input-container{
+  display:none
+  
+}
+  
+.grid-item {
+  /* background-color: #eee; */
+  padding: 5px;
+}
+#slider1-value,#slider2-value,#slider3-value,#slider4-value,#springSlider-value,#dampeningSlider-value{
+  font-size: 13px;
+  
+}
+.flex-column {
+  padding-left: 2px;
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+  margin: center;
+  display: inline-block;
+  background-color: #191a1a; /* Replace #colur with your desired color */
+  border-radius: 15px;
+  box-shadow: -10px 10px 5px black;
+  padding:5px
+}
+
+
+.flex-columny {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  max-height: max-content;
+}
+
+
+
+.canvas{
+  /* display: inline-block; */
+  border-radius: 15px;
+}
+#globalSliders {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch
+  ;
+}
+#simulation-items{
+  border : 2px solid black;
+
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  #playground-canvas-container {
-    flex: 1;
-    border: 2px solid black;
-  }
-  
-  #matrix {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%; /* set to full width of remaining space */
-    text-align: center; /* center the contents horizontally */
-  }
-  
+    background-color: #191a1a; /* Replace #colur with your desired color */
+    border-radius: 15px;
+    box-shadow: -10px 10px 5px black;
+}
+
+body{
+  background-color: #3c3c3c;
+  font-family:'Hussar Bold Web Edition';
+}
+p{
+  font-weight:400;
+  text-align: center;
+  color:white
+}
+#anchor-checkbox{
+  color:white;
+}
+#heading-2{
+  font-size: 2rem;
+}
+.separator {
+  margin: 5px 0;
+  height: 10px;
+  background: radial-gradient(ellipse at center, black, transparent);
+  background-clip: padding-box;
+}
+
+

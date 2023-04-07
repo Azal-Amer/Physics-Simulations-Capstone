@@ -3,13 +3,13 @@
   src: url('/Assets/HussarBold.otf');
 }
 html, body {
-    right: 50px;
-    padding: 0;
-  }
-  canvas {
-    display: block;
-    border-radius: 15%;
-  }
+  right: 50px;
+  padding: 0;
+}
+canvas {
+  display: block;
+  border-radius: 15px;
+}
 
 .container {
   display: flex;
@@ -22,32 +22,13 @@ html, body {
 
 
 
-/* #squircle {
 
-  width: 200px;
-  height: 200px;
-  
-} */
 
 
 .variable-width-div {
   width: 56%;
   height: 500px;
 }
-/* @media(min-width:700px){
-  
-} */
-/* 
-@media (max-width:1000px) {
-  .container{
-    flex-direction: column;
-  }
-  #canvas-container{
-    width: 100%;
-    height:100%;
-    transform: scale(2);
-  }
-} */
 @media(max-width:1000px){
   .container{
     flex-direction: column;
@@ -70,9 +51,8 @@ html, body {
 body{
   background-color: #3c3c3c;
   font-family:'Hussar Bold';
-  
-
 }
+
 p{
   font-weight:400;
   font-size:1rem;

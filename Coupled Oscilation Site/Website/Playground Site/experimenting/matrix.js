@@ -1,37 +1,37 @@
 
 function generalKMatrixConstructor(links,n){
-  K=nj.zeros([n+1, n+1]).tolist();
+  let Z=nj.zeros([n+1, n+1]).tolist();
   for (let i = 0; i < links.length; i++) {
     console.log(links[i])
     j = links[i][0]
     k = links[i][1]
-    if(K[j][j]=='0'){
-      K[j][j]='k_'+i
+    if(Z[j][j]=='0'){
+      Z[j][j]='k_'+i
     }
     else{
-      K[j][j]+=' +k_'+i
+      Z[j][j]+=' +k_'+i
     }
-    if(K[j][k]=='0'){
+    if(Z[j][k]=='0'){
       K[j][k]='-k_'+i
     }
     else{
-      K[j][k]+=' -k_'+i
+      Z[j][k]+=' -k_'+i
     }
-    if(K[k][j]=='0'){
+    if(Z[k][j]=='0'){
       K[k][j]='-k_'+i
     }
     else{
-      K[k][j]+=' -k_'+i
+      Z[k][j]+=' -k_'+i
     }
-    if(K[k][k]=='0'){
+    if(Z[k][k]=='0'){
       K[k][k]='k_'+i
     }
     else{
-      K[k][k]+=' +k_'+i
+      Z[k][k]+=' +k_'+i
     }
     
   }
-  return K
+  return Z
 }
 
 K = generalKMatrixConstructor([[0,1],[1,2],[2,3],[3,4],[4,5]],5)

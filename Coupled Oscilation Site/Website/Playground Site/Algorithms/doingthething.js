@@ -1,9 +1,9 @@
-function Simulator(N,wallMount,mass,K,x_0){
+function Simulator(N,wallMount,mass,K,x_0,damping){
+    K = K
+    console.log(initialConditions,driverParameters)
     debugging =false
     oscillator_List=[]
     spring_constant=1
-
-
     // wallMount= true
 
     // # number of objects
@@ -13,7 +13,7 @@ function Simulator(N,wallMount,mass,K,x_0){
     console.log(initSprings)
     // # nx1 matrix representing the spring constants associated with each object
 
-    driverParameters = extend_array([[0,.7,.2],[0,2,5],[0,2,-1]],N)
+    // driverParameters = extend_array([[0,.7,.2],[0,2,5],[0,2,-1]],N)
 
     // # nx3 matrix representing the parameters of the driving force for each object, [amplitude, frequency, phase]
     DrivingForce = driverPopulator(N,driverParameters)
@@ -21,8 +21,7 @@ function Simulator(N,wallMount,mass,K,x_0){
     dragForce = extend_array([0],N)
 
     // # x1 vector representing the drag force for each object
-    initialConditions = extend_array([[0,0],[0,0],[0,0]],N)
-    initialConditions[0] = [x_0,0]
+    
     console.log('x_0',x_0)
     // # nx2 matrix representing the initial conditions for each object, [position, velocity]
 
@@ -55,22 +54,23 @@ function Simulator(N,wallMount,mass,K,x_0){
     // # Oscillators is the list of oscillator objects
     for(let i=0;i<N;i++){
         console.log(i)
-        oscillator = new Oscillator(x_0=initialConditions[i][0],v_0=initialConditions[i][1],spring_constant=initSprings[i],A=1, mass = M[i],n = i,iteration = 0,Drag = dragForce[i],drivingForce=DrivingForce[i])
+        oscillator = new Oscillator(x_0=initialConditions[i][0],v_0=initialConditions[i][1],spring_constant=initSprings[i],A=1, mass = M[i],n = i,iteration = 0,frequency = driverParameters[i][1],amplitude = driverParameters[i][0],Drag = dragForce[i],drivingForce=DrivingForce[i])
+        oscillator.anchor = anchorStates[i]
         oscillator_List.push(oscillator)
         
     }
     //     # create an oscillator object for each object
     //     # calculate the next step
     // # Now that the oscillators are constructed, I can create the K and B matrix
-    K = chainedKMatrix(N,oscillator_List,wallMount = wallMount)
     
     // # ^^This has a leading spring
 
     console.log('K Matrix')
     // B=nj.zeros([n+1, n+1]).tolist()
-    B = chainedBMatrix(n+1,oscillator_List,wallMount = true)
-
-    time = 40
+    // B = chainedBMatrix(n+1,oscillator_List,wallMount = true)
+    B = KMatrixConstructor(links,rectangles.length,damping)
+    
+    time = 20
     dt = 0.004
     var startTime = performance.now()
     RKCalculator(time, dt,N)

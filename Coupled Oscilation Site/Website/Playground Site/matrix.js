@@ -1,50 +1,65 @@
 
-function generalKMatrixConstructor(links,n){
+function generalKMatrixConstructor(links,n,anchorStates){
   K=nj.zeros([n, n]).tolist();
+  console.log(anchorStates)
   for (let i = 0; i < links.length; i++) {
     j = links[i][0]
     k = links[i][1]
-    if(K[j][j]=='0'){
-      K[j][j]='k_'+i
+    if(anchorStates[j] == false){
+      if(K[j][j]=='0'){
+        K[j][j]='k_{\\it('+j+'→'+k+')}'
+      }
+      else{
+        K[j][j]+=' +k_{\\it('+j+'→'+k+')}'
+      }
+      if(K[j][k]=='0'){
+        K[j][k]='-k_{\\it('+j+'→'+k+')}'
+      }
+      else{
+        K[j][k]+=' -k_{\\it('+j+'→'+k+')}'
+      }
     }
-    else{
-      K[j][j]+=' +k_'+i
-    }
-    if(K[j][k]=='0'){
-      K[j][k]='-k_'+i
-    }
-    else{
-      K[j][k]+=' -k_'+i
-    }
-    if(K[k][j]=='0'){
-      K[k][j]='-k_'+i
-    }
-    else{
-      K[k][j]+=' -k_'+i
-    }
-    if(K[k][k]=='0'){
-      K[k][k]='k_'+i
-    }
-    else{
-      K[k][k]+=' +k_'+i
+    if(anchorStates[k] == false){
+
+    
+      if(K[k][j]=='0'){
+        K[k][j]='-k_{\\it('+j+'→'+k+')}'
+      }
+      else{
+        K[k][j]+='-k_{\\it('+j+'→'+k+')}'
+      }
+      if(K[k][k]=='0'){
+        K[k][k]='k_{\\it('+j+'→'+k+')}'
+      }
+      else{
+        K[k][k]+='k_{\\it('+j+'→'+k+')}'
+      }
     }
     
   }
+  for(let item = 0;item<n;item++){
+    console.log(item)
+    if(anchorStates[item]==true){
+      console.log('here')
+      K[item] = nj.zeros([1,n]).tolist()[0]
+    }
+  }
+  console.log(K)
   return K
 }
 
 function KMatrixConstructor(links,n,spring_constants){
-  K=nj.zeros([n, n]).tolist();
+  let Z=nj.zeros([n, n]).tolist();
   for (let i = 0; i < links.length; i++) {
     j = links[i][0]
     k = links[i][1]
-    K[j][j]+=spring_constants
-    K[j][k]+=-spring_constants
-    K[k][j]+=-spring_constants
-    K[k][k]+=spring_constants
+    Z[j][j]+=spring_constants
+    Z[j][k]+=-spring_constants
+    Z[k][j]+=-spring_constants
+    Z[k][k]+=spring_constants
   }
   
-  return K
+  return Z
 }
 
 function latexUpdater(matrix){
@@ -65,8 +80,7 @@ function latexUpdater(matrix){
   MathJax.typesetPromise().then(() => console.log("Updated Matrix"));
 }
 function linkToLatex(links,n){
-    K= generalKMatrixConstructor(links,n)
-  
+  K= generalKMatrixConstructor(links,n,anchorStates)
   latexUpdater(K)
 }
 

@@ -71,7 +71,7 @@ function Simulator(N,wallMount,mass,spring_constant,x_0){
     B = chainedBMatrix(n+1,oscillator_List,wallMount = true)
 
     time = 40
-    dt = 0.004
+    dt = 0.001
     var startTime = performance.now()
     RKCalculator(time, dt,N)
     var endTime = performance.now()
