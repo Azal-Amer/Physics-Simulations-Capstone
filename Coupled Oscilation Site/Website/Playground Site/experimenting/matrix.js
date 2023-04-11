@@ -12,19 +12,19 @@ function generalKMatrixConstructor(links,n){
       Z[j][j]+=' +k_'+i
     }
     if(Z[j][k]=='0'){
-      K[j][k]='-k_'+i
+      Z[j][k]='-k_'+i
     }
     else{
       Z[j][k]+=' -k_'+i
     }
     if(Z[k][j]=='0'){
-      K[k][j]='-k_'+i
+      Z[k][j]='-k_'+i
     }
     else{
       Z[k][j]+=' -k_'+i
     }
     if(Z[k][k]=='0'){
-      K[k][k]='k_'+i
+      Z[k][k]='k_'+i
     }
     else{
       Z[k][k]+=' +k_'+i
