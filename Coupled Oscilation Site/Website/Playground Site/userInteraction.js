@@ -20,6 +20,7 @@ function mousePressed() {
         found = true;
   //       if I wanted to add selection behavior, here's where
         if(construction){
+          selection = i
           
           let offsetX = mouseX - rectangles[i].x;
           let offsetY = mouseY - rectangles[i].y;
@@ -110,22 +111,25 @@ function mousePressed() {
 
     }
   //   if you've gone through everything and none have been selected, nothing has been clicked
-    if(pings==0 && playground==true && linking==true){
+    if(pings==0 && playground==true && linking==true && mouseX>0){
       selection = NaN
       sliderDiv.style.display = "none";
 
       // console.log('nothing clicked')
     }
-    if (construction) {
+    if (!found && construction) {
       
       startPoint = createVector(mouseX, mouseY);
 
       // if the endpoint isnt within an existing rectangle, create a new one
       mouseDragged = function() {
-        redraw();
+        // redraw();
+        
+        fill(255,255,255,255)
         rect(startPoint.x, startPoint.y, mouseX - startPoint.x, mouseY - startPoint.y);
       }
     }
+
 }
 
 function mouseReleased() {
@@ -174,7 +178,6 @@ function mouseReleased() {
         startY = startPoint.y
         endY = -startPoint.y+mouseY
       }
-      console.log(startX,startY,endX,endY)
       box = new Box(startX,startY,rectangles.length,endX,endY)
       rectangles.push(box);
       
@@ -192,9 +195,10 @@ function mouseReleased() {
 function redraw() {
   background(255);
   if(construction){
-  for (let i = 0; i < rectangles.length; i++) {
-    rect(rectangles[i].x, rectangles[i].y, rectangles[i].w, rectangles[i].h);
-  }}
+    for (let i = 0; i < rectangles.length; i++) {
+      rect(rectangles[i].x, rectangles[i].y, rectangles[i].w, rectangles[i].h);
+    }
+  }
 }
 var sliderDiv = document.getElementById("input-container");
 function resetPositions(){
@@ -202,9 +206,44 @@ function resetPositions(){
     rectangles[i].move(5*oscillator_List[i].x_i[0])
   }
 }
-function keyPressed() {
-  if (key === 'r' || key === 'R') {
-    rectangles = [];
+
+const description = document.querySelector('#description');
+const supplementalDesc = document.querySelector('#supplemental-desc');
+
+function simulateTheThing(){
+  lastItems = [links,initialConditions,driverParameters]
+  
+    K = KMatrixConstructor(links,rectangles.length,spring_constants)
+    console.log(K)
+    // B = KMatrixConstructor(links,rectangles.length,damping)
+    // console.log(B)
+    // third input is spring constant
+    M = []
+    for(let i = 0; i<rectangles.length; i++){
+      M.push(rectangles[i].mass)
+    }
+    oscillator_List = Simulator(rectangles.length,false,M,K,-10,damping)
+    
+
+}
+function constructionMode(){
+  springSlider.elt.disabled = false;
+  dampeningSlider.elt.disabled = false;
+  initialPosition.elt.disabled = false;
+  initialVelocity.elt.disabled = false;
+  driverFrequency.elt.disabled = false;
+  driverAmplitude.elt.disabled = false;
+  resetPositions()
+  sliderDiv.style.display = "none";
+  construction = true; // toggle the boolean value
+  linking = false;
+  properties = false;
+  playground = true
+  description.textContent = 'Click and Drag boxes to construct and move them around!';
+  supplementalDesc.textContent = '';
+}
+function resetMode(){
+  rectangles = [];
     links = [];
     linksClass = [];
     oscillator_List=[];
@@ -227,25 +266,9 @@ function keyPressed() {
     linkToLatex(links,rectangles.length)
     construction = true
     playground=true
-    
-  }
-  if (key === 'c' || key === 'C') {
-    springSlider.elt.disabled = false;
-    dampeningSlider.elt.disabled = false;
-    initialPosition.elt.disabled = false;
-    initialVelocity.elt.disabled = false;
-    driverFrequency.elt.disabled = false;
-    driverAmplitude.elt.disabled = false;
-    resetPositions()
-    sliderDiv.style.display = "none";
-    construction = true; // toggle the boolean value
-    linking = false;
-    properties = false;
-    playground = true
-  
-  }
-  if((key === 'l' || key === 'L')){
-    springSlider.elt.disabled = false;
+}
+function linkMode(){
+  springSlider.elt.disabled = false;
     dampeningSlider.elt.disabled = false;
     initialPosition.elt.disabled = false;
     initialVelocity.elt.disabled = false;
@@ -259,9 +282,11 @@ function keyPressed() {
     linking = true;
     properties = false;
     playground = true
-  }
-  if((key === 'p' || key === 'P')){
-    springSlider.elt.disabled = false;
+    description.textContent = 'Click two boxes together to add a spring ';
+    supplementalDesc.textContent = 'Click them again to remove it. Click away to deselect';
+}
+function propertiesMode(){
+  springSlider.elt.disabled = false;
     dampeningSlider.elt.disabled = false;
     initialPosition.elt.disabled = false;
     initialVelocity.elt.disabled = false;
@@ -272,27 +297,17 @@ function keyPressed() {
     construction = false;
     linking = false;
     playground = true
-  }
-
-  if((key =='d' ||key == 'D') && !isNaN(selection)){
-    springSlider.elt.disabled = false;
-    dampeningSlider.elt.disabled = false;
-    initialPosition.elt.disabled = false;
-    initialVelocity.elt.disabled = false;
-    driverFrequency.elt.disabled = false;
-    driverAmplitude.elt.disabled = false;
-    deleteNode(selection)
-    selection = NaN
-    sliderDiv.style.display = "none";
-
-//     we need to go into the links of each box, and through all the links list, and delete anything with this box in it
-    
-  }
-  if((key == 's' || key == 'S') && rectangles.length>=2){
+    description.textContent = 'Click on a box to change its properties!';
+    supplementalDesc.textContent = 'Each box has 4 unique sliders, move those to change the properties of the box ';
+}
+function simulate(){
+  if(rectangles.length>=2){
+    description.textContent = 'Simulating. To edit the system, click back to one of the previous modes';
+    supplementalDesc.textContent = '';
     initialPosition.elt.disabled = true;
-        initialVelocity.elt.disabled = true;
-        driverFrequency.elt.disabled = true;
-        driverAmplitude.elt.disabled = true;
+    initialVelocity.elt.disabled = true;
+    driverFrequency.elt.disabled = true;
+    driverAmplitude.elt.disabled = true;
     springSlider.elt.disabled = true;
     dampeningSlider.elt.disabled = true;
     sliderDiv.style.display = "flex";
@@ -302,27 +317,82 @@ function keyPressed() {
     playground = false
     linkking = false
     construction = false
+    
     if(lastItems !=items && links!=[] ){
       frame = 0
       simulateTheThing()
 
+      }
+      
+  }
+}
+function deleteTheDude(){
+  springSlider.elt.disabled = false;
+    dampeningSlider.elt.disabled = false;
+    initialPosition.elt.disabled = false;
+    initialVelocity.elt.disabled = false;
+    driverFrequency.elt.disabled = false;
+    driverAmplitude.elt.disabled = false;
+    deleteNode(selection)
+    selection = NaN
+    sliderDiv.style.display = "none";
+    if(playground==false){
+      propertiesMode();
     }
+}
+
+
+document.getElementById("button1").addEventListener("click", function() {
+  constructionMode();
+});
+
+document.getElementById("button2").addEventListener("click", function() {
+  linkMode();
+});
+
+document.getElementById("button3").addEventListener("click", function() {
+  propertiesMode();
+});
+
+document.getElementById("button4").addEventListener("click", function() {
+ simulate();
+});
+document.getElementById("resetButton").addEventListener("click", function() {
+  resetMode();
+ });
+document.getElementById("deleteButton").addEventListener("click", function() {
+  console.log('delete button',selection)
+  if(!isNaN(selection)){
+    
+
+    deleteTheDude();
+  }
+ });
+ 
+function keyPressed() {
+  if (key === 'r' || key === 'R') {
+    resetMode()
+  }
+  if (key === 'c' || key === 'C') {
+    constructionMode();
+  
+  }
+  if((key === 'l' || key === 'L')){
+    linkMode()
+  }
+  if((key === 'p' || key === 'P')){
+    propertiesMode()
+  }
+
+  if((key =='d' ||key == 'D') && !isNaN(selection)){
+    deleteTheDude()
+
+//     we need to go into the links of each box, and through all the links list, and delete anything with this box in it
+    
+  }
+  if((key == 's' || key == 'S')){
+    simulate()
   }
 
 }
-function simulateTheThing(){
-  lastItems = [links,initialConditions,driverParameters]
-  
-    K = KMatrixConstructor(links,rectangles.length,spring_constants)
-    console.log(K)
-    // B = KMatrixConstructor(links,rectangles.length,damping)
-    // console.log(B)
-    // third input is spring constant
-    M = []
-    for(let i = 0; i<rectangles.length; i++){
-      M.push(rectangles[i].mass)
-    }
-    oscillator_List = Simulator(rectangles.length,false,M,K,-10,damping)
-    
 
-}

@@ -14,6 +14,7 @@ function includesButBetter(row){
     return [includesRow,foundRow]
   }
   function deleteNode(index) {
+    console.log('deleteNode',index)
     // Remove the node from the list
     rectangles.splice(index, 1);
     initialConditions.splice(index, 1);
@@ -36,6 +37,7 @@ function includesButBetter(row){
         if (link[1] > index) link[1]--;
       }
     }
+
     
     // rebuilding the Links Class list
     linksClass = []

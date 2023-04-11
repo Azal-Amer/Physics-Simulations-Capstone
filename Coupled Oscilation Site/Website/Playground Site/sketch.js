@@ -3,7 +3,7 @@ let found;
 
 construction = true;
 linking = false;
-properties = false;
+properties = true;
 
 let selection;
 links = []
@@ -135,12 +135,16 @@ function draw() {
     // in the center of the rectangle, draw the index
 
     
-    if(i==selection){
-      fill(255,0,0)
+    if (i == selection) {
+      fill(255, 0, 0)
 
-      
+
     }
-    else{
+    else if (anchorStates[i] == true) {
+      stroke(0, 0, 0)
+      fill('#0060df');
+    }
+    else {
       stroke('#0060df')
       fill('#00F3F7');
     }
@@ -180,7 +184,6 @@ function draw() {
     }
     fill(255)
     textAlign(LEFT, CENTER);
-    if(construction == false || playground == false){
       
       selectionString = 'Selection: ' + selection
       if(Number.isInteger(selection)){
@@ -188,7 +191,7 @@ function draw() {
       }
 
       // text(selectionString, 20, 50);
-    }
+    
     
 }
 

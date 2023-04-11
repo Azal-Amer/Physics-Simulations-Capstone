@@ -216,7 +216,6 @@ class Box {
       this.height = h; // height of the box
       this.links = [] //Who this box is connected to
       this.mass = abs(this.width*this.height)/1000
-      console.log(this.mass)
       initialConditions.push([0,0])
       driverParameters.push([0,0,0])
       anchorStates.push(false)

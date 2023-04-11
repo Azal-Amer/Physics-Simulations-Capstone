@@ -10,6 +10,8 @@
 	<script src = "https://cdn.jsdelivr.net/npm/gpu.js@latest/dist/gpu-browser.min.js"></script>
     
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
   
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" type="text/css" href="./Font Assets/stylesheet.css">
@@ -42,48 +44,69 @@
 		</p> -->
 	</div>
 	<div class = 'main-container'>
-		<div class = "flex-column">
-			<div class = "canvas" id="playground-canvas-container"></div>
-			
-			<div id = 'global-conditions'>
-				<div class = "flex-rowy" id = 'globalSliders'>
-					<p id = 'heading-2' >Global Conditions</p>
-					<div class = flex-columny>
-						<p id="springSlider-value"></p>
-						<div class = 'globalSlider' id = "springSlider"></div>
-					</div>
-					<div class = flex-columny>
-						<p id="dampeningSlider-value"></p>
-						<div class = 'globalSlider' id = "dampingSlider"></div>
-					</div>
+		
+		<div class = 'flex-row'>
+			<div class = 'flex-columndude'>
+				<div class = 'flex-column'>
+					<button id="button1" class="Mode-Button">1. Construction Mode</button>
+					<button id="button2" class="Mode-Button">2. Linking Mode</button>
+					<button id="button3" class="Mode-Button">3. Properties Mode</button>
+					<button id="button4" class="Mode-Button">4. Simulate</button>
+
+					<div class = 'flex-row'>
+						<button id="resetButton" class="Mode-Button">Reset</button>
+						<button id="deleteButton" class="Mode-Button">Delete</button>
+						</div>
+				</div>
+				<div class = 'flex-column' id="descriptionBox">
+					<p id = 'description'>Click and Drag boxes to construct and move them around!</p>
+					<p id = 'supplemental-desc'></p>
+
 				</div>
 			</div>
-			<div class = 'separator'></div>
-			<div id = 'input-container'>
+			<div class = "flex-column">
+				<div class = "canvas" id="playground-canvas-container"></div>
 				
-				<p id = 'heading-2'>Selected Conditions <br></br></p>
-				<div class = "flex-rowy">
-				
-					<div class = 'checkbox' id = "anchor-checkbox"></div>
-					<div id="grid-container">
-						
-						<div class="grid-item" id="slider1">
-							<p id="slider1-value"></p>
+				<div id = 'global-conditions'>
+					<div class = "flex-rowy" id = 'globalSliders'>
+						<p id = 'heading-2' >Global Conditions</p>
+						<div class = flex-columny>
+							<p id="springSlider-value"></p>
+							<div class = 'globalSlider' id = "springSlider"></div>
 						</div>
-						<div class="grid-item" id="slider2">
-							<p id="slider2-value"></p>
-						</div>
-						<div class="grid-item" id="slider3">
-							<p id="slider3-value"></p>
-						</div>
-						<div class="grid-item" id="slider4">
-							<p id="slider4-value"></p>
+						<div class = flex-columny>
+							<p id="dampeningSlider-value"></p>
+							<div class = 'globalSlider' id = "dampingSlider"></div>
 						</div>
 					</div>
-		   		</div>
+				</div>
+				<div class = 'separator'></div>
+				<div id = 'input-container'>
+					
+					<p id = 'heading-2'>Selected Conditions <br></br></p>
+					<div class = "flex-rowy">
+					
+						<div class = 'checkbox' id = "anchor-checkbox"></div>
+						<div id="grid-container">
+							
+							<div class="grid-item" id="slider1">
+								<p id="slider1-value"></p>
+							</div>
+							<div class="grid-item" id="slider2">
+								<p id="slider2-value"></p>
+							</div>
+							<div class="grid-item" id="slider3">
+								<p id="slider3-value"></p>
+							</div>
+							<div class="grid-item" id="slider4">
+								<p id="slider4-value"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class = 'separator'></div>
+				<div id="matrix" class = 'simulation-items'></div>
 			</div>
-			<div class = 'separator'></div>
-			<div id="matrix" class = 'simulation-items'></div>
 		</div>
 	</div>
 	

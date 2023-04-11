@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>KaTeX Resize Example</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
+	<style>
+		#container {
+			width: 50vw;
+			height: auto;
+			margin: 0 auto;
+			border: 1px solid black;
+			padding: 10px;
+			box-sizing: border-box;
+			overflow: auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script>
+		// Initialize the KaTeX element
+		const container = document.getElementById('container');
+		const tex = '\\sum_{i=1}^n i^2 = \\frac{n(n+1)(2n+1)}{6}';
+		const options = { displayMode: true };
+		katex.render(tex, container, options);
+
+		// Update font size on window resize
+		window.addEventListener('resize', () => {
+			const fontSize = container.offsetWidth / 50;
+			container.style.fontSize = `${fontSize}px`;
+		});
+	</script>
+</body>
+</html>

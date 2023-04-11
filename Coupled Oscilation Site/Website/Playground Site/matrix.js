@@ -1,7 +1,6 @@
 
 function generalKMatrixConstructor(links,n,anchorStates){
   K=nj.zeros([n, n]).tolist();
-  console.log(anchorStates)
   for (let i = 0; i < links.length; i++) {
     j = links[i][0]
     k = links[i][1]
@@ -38,13 +37,10 @@ function generalKMatrixConstructor(links,n,anchorStates){
     
   }
   for(let item = 0;item<n;item++){
-    console.log(item)
     if(anchorStates[item]==true){
-      console.log('here')
       K[item] = nj.zeros([1,n]).tolist()[0]
     }
   }
-  console.log(K)
   return K
 }
 
@@ -63,7 +59,7 @@ function KMatrixConstructor(links,n,spring_constants){
 }
 
 function latexUpdater(matrix){
-  let latexCode = "\\begin{equation*}\n\\begin{bmatrix}\n";
+  let latexCode = "\\begin{bmatrix}\n";
 
   for (let i = 0; i < matrix.length; i++) {
     for (let j = 0; j < matrix[i].length; j++) {
@@ -72,13 +68,19 @@ function latexUpdater(matrix){
     latexCode = latexCode.slice(0, -2) + " \\\\\n";
   }
   
-  latexCode += "\\end{bmatrix}\n\\end{equation*}";
+  latexCode += "\\end{bmatrix}";
   
   
-  const matrixDiv = document.getElementById("matrix");
-  matrixDiv.innerHTML = "$$" + latexCode + "$$";
-  MathJax.typesetPromise().then(() => console.log("Updated Matrix"));
-}
+  const container = document.getElementById('matrix');
+		const options = { displayMode: true };
+		katex.render(latexCode, container, options);
+
+		// Update font size on window resize
+		window.addEventListener('resize', () => {
+			const fontSize = container.offsetWidth / 50;
+			container.style.fontSize = `${fontSize}px`;
+		});
+  }
 function linkToLatex(links,n){
   K= generalKMatrixConstructor(links,n,anchorStates)
   latexUpdater(K)
