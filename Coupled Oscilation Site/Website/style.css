@@ -15,3 +15,10 @@
     width: 50%;
   margin: center;
 }
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* set the height to the full height of the viewport */
+}

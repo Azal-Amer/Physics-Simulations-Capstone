@@ -390,10 +390,10 @@ var energybarCharts = function(sketch) {
 // spring = new p5(springSketch)
 
 new p5(energybarCharts);
-// oscilator = new p5(s1)
+oscilator = new p5(s1)
 // // oscilator = 0
 // oscilator.remove();
-springSketch = new p5(springSketch)
+// springSketch = new p5(springSketch)
 // springSketch.parent("canvas-container");
 // const toggleButton = document.getElementById("toggleButton");
 // const sketchContainer = document.getElementById("sketchContainer");

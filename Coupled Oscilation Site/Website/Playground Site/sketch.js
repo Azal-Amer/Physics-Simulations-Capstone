@@ -49,7 +49,7 @@ function preload() {
 
 function setup() {
   textFont(myFont);
-  playgroundCanvas = createCanvas(800, 400);
+  playgroundCanvas = createCanvas(1000, 400);
   generateSliders()
 
   playgroundCanvas.parent('playground-canvas-container');

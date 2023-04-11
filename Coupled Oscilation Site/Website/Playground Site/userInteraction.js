@@ -116,7 +116,7 @@ function mousePressed() {
 
       // console.log('nothing clicked')
     }
-    if (!found && construction) {
+    if (construction) {
       
       startPoint = createVector(mouseX, mouseY);
 
