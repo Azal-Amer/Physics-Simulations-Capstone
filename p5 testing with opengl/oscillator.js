@@ -128,6 +128,7 @@ function setups1(sketchy) {
     frequency = 0
     RK = RK4(angle, v_0, time, stepSize, A, B, C, D(amplitude, frequency), zerothOrderParam(pendulum_length), firstOrderParam);
     RKx = RK[0];
+    energy = energyCalculator(RK[0], RK[1], isSpring)
 
     // width = width*scaleX
     // height = width*scaleY
@@ -302,7 +303,7 @@ function updateSim(sketchy) {
     amplitude = sketchy.amplitudeSlider.value()
     frequency = sketchy.freqSlider.value()
     RK = RK4(sketchy.thetaSlider.value(), sketchy.velocitySlider.value(), time, stepSize, A, B(0, sketchy.dragSlider.value()), C, D(amplitude, frequency), zerothOrderParam(sketchy.lengthSlider.value()), firstOrderParam);
-
+    energy = energyCalculator(RK[0], RK[1], isSpring)
     drag = sketchy.dragSlider.value()
 
 

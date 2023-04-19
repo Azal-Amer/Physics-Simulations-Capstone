@@ -7,6 +7,9 @@ let heat = 0;
 let pendulum_length = 10
 let t_0;
 offsetBars = 0;
+let spring_constant = 1
+
+let energy= [];
 // TODO- 
 // 1. ADD 3 MORE SLIDERS, DRIVING AMPLITUDE, DRIVING PHASE, AND DRIVING FREQUENCY
 // Just make the current driving force function into an operator which returns a driving function
@@ -18,6 +21,8 @@ offsetBars = 0;
 // should be in a flexible div split into 3 rows, top is sum solution, second is homogenous solution, and bottom is driving force
 // On the top right of the p5 sketch should be the switch to make it happen 
 // 4. A Splash instruction menu?
+
+
 
 class Spring {
   createVector(x,y){
@@ -86,97 +91,167 @@ class Spring {
 
 
 }
+
+
+isSpring = false
+
+let switchElem = document.getElementById("mySwitch");
+let switchLabel = switchElem.parentElement;
+switchElem.checked = isSpring;
+switchElem.addEventListener("change", function() {
+  if (switchElem.checked) {
+    switchLabel.classList.add("pendulum-on");
+  } else {
+    switchLabel.classList.remove("pendulum-on");
+  }
+});
+
+
+
+const mySwitch = document.getElementById("mySwitch");
+ switchLabel = mySwitch.labels[0];
+mySwitch.addEventListener("change", function() {
+  isSpring = this.checked;
+  oscilator.remove()
+  let allCharts = Chart.instances;
+
+// Loop through all chart instances and destroy each one
+  Chart.helpers.each(allCharts, function(chartInstance) {
+    chartInstance.destroy();
+  });
+  oscilator = new p5(s1)
+  // if (mySwitch.checked) {
+  //   switchLabel.innerText = "Pendulum";
+  // } else {
+  //   switchLabel.innerText = "Spring";
+  // }
+});
+
+
+function theholySketch(sketch){
+  if(isSpring){
+    setupSpring(sketch)
+  }
+  else{
+    setups1(sketch)
+  }
+}
+
+function theholyDraw(sketch){
+  if(isSpring){
+    drawSpring(sketch)
+  }
+  else{
+    drawy(sketch)
+  }
+}
+function theHolyWindowResized(sketch){
+  if(isSpring){
+    windowResizedSpring(sketch)
+  }
+  else{
+    windowResized(sketch)
+  }
+}
+
 var s1 = function(sketch) {
-  
   // sketch=sketch
   sketch.preload = preloads1(sketch, 500)
-  sketch.setup = setups1(sketch)
-  sketch.draw = drawy(sketch)
-  sketch.windowResized = function() {
-    console.log('sd')
-    offsetSlider = 30
-    height = width
-    // if screensize less than 900px, then double height and width
+  if(!isSpring){
+    sketch.setup = setups1(sketch)
+    sketch.draw = drawy(sketch)
+    sketch.windowResized = function() {
+      console.log('sd')
+      offsetSlider = 30
+      height = width
+      // if screensize less than 900px, then double height and width
 
-    // width = document.querySelector('.fixed-width-div').offsetLeft;
-    // height = width;
-    // height = document.querySelector('.fixed-width-div').offsetHeight;
-    console.log(width, height)
-
-
-    sketch.velocitySlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
-    sketch.velocitySlider.style('top', `${sketch.canvas.offsetTop + (((445 - offsetSlider)) / 500) * height}px`);
-
-    sketch.lengthSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
-    sketch.lengthSlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
-
-    sketch.thetaSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
-    sketch.thetaSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+      // width = document.querySelector('.fixed-width-div').offsetLeft;
+      // height = width;
+      // height = document.querySelector('.fixed-width-div').offsetHeight;
+      console.log(width, height)
 
 
-    sketch.dragSlider.style('top', `${sketch.canvas.offsetTop + ((445 - offsetSlider) / 500) * height}px`);
-    sketch.dragSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+      sketch.velocitySlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
+      sketch.velocitySlider.style('top', `${sketch.canvas.offsetTop + (((445 - offsetSlider)) / 500) * height}px`);
 
-    sketch.amplitudeSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
-    sketch.amplitudeSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+      sketch.lengthSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
+      sketch.lengthSlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
 
-    sketch.freqSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
-    sketch.freqSlider.style('left', `${sketch.canvas.offsetLeft + (255 / 500) * width}px`);
+      sketch.thetaSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
+      sketch.thetaSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
 
-    sketch.currCamera.setPosition(0, 0, 50);
+
+      sketch.dragSlider.style('top', `${sketch.canvas.offsetTop + ((445 - offsetSlider) / 500) * height}px`);
+      sketch.dragSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+      sketch.amplitudeSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
+      sketch.amplitudeSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+      sketch.freqSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
+      sketch.freqSlider.style('left', `${sketch.canvas.offsetLeft + (255 / 500) * width}px`);
+
+      sketch.currCamera.setPosition(0, 0, 50);
+    }
+    
   }
+  else{
+
+    sketch.setup = setupSpring(sketch)
+    sketch.draw = springDrawy(sketch)
+    sketch.windowResized = function() {
+      console.log('sd')
+      offsetSlider = 30
+      height = width
+      // if screensize less than 900px, then double height and width
+
+      // width = document.querySelector('.fixed-width-div').offsetLeft;
+      // height = width;
+      // height = document.querySelector('.fixed-width-div').offsetHeight;
+      console.log(width, height)
+
+
+      sketch.velocitySlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
+      sketch.velocitySlider.style('top', `${sketch.canvas.offsetTop + (((445 - offsetSlider)) / 500) * height}px`);
+
+      sketch.lengthSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
+      sketch.lengthSlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
+
+      sketch.thetaSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
+      sketch.thetaSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+
+      sketch.dragSlider.style('top', `${sketch.canvas.offsetTop + ((445 - offsetSlider) / 500) * height}px`);
+      sketch.dragSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+      sketch.amplitudeSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
+      sketch.amplitudeSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
+
+      sketch.freqSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
+      sketch.freqSlider.style('left', `${sketch.canvas.offsetLeft + (255 / 500) * width}px`);
+      sketch.text("Spring Constant: " + Math.round(sketchy.lengthSlider.value()) + "N/m", 155, 250);
+
+      sketch.text("Initial Velocity: " + sketchy.velocitySlider.value()/10 + "m/s",155, 310);
+      sketch.text("Displacement: " + Math.round(sketchy.thetaSlider.value())/10 + "m", -15, 250)
+      sketch.text("Drag: " + sketchy.dragSlider.value(), -15, 310);
+      sketch.text("Driver Amplitude: " + sketchy.amplitudeSlider.value() + "N", -15, 370);
+      sketch.text("Driver Frequency: " + sketchy.freqSlider.value(), 155, 370);
+
+
+      sketch.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 100, -21);
+
+      // sketch.currCamera.setPosition(0, 0, 50);
+    }
+
+  }
+  
 
 
 }
 var springSketch = function(sketch) {
   
   // sketch=sketch
-  sketch.preload = preloads1(sketch, 500)
-  sketch.setup = setupSpring(sketch)
-  sketch.draw = springDrawy(sketch)
-  sketch.windowResized = function() {
-    console.log('sd')
-    offsetSlider = 30
-    height = width
-    // if screensize less than 900px, then double height and width
-
-    // width = document.querySelector('.fixed-width-div').offsetLeft;
-    // height = width;
-    // height = document.querySelector('.fixed-width-div').offsetHeight;
-    console.log(width, height)
-
-
-    sketch.velocitySlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
-    sketch.velocitySlider.style('top', `${sketch.canvas.offsetTop + (((445 - offsetSlider)) / 500) * height}px`);
-
-    sketch.lengthSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
-    sketch.lengthSlider.style('left', `${sketch.canvas.offsetLeft + ((255) / 500) * width}px`);
-
-    sketch.thetaSlider.style('top', `${sketch.canvas.offsetTop + ((390 - offsetSlider) / 500) * height}px`);
-    sketch.thetaSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
-
-
-    sketch.dragSlider.style('top', `${sketch.canvas.offsetTop + ((445 - offsetSlider) / 500) * height}px`);
-    sketch.dragSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
-
-    sketch.amplitudeSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
-    sketch.amplitudeSlider.style('left', `${sketch.canvas.offsetLeft + (80 / 500) * width}px`);
-
-    sketch.freqSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
-    sketch.freqSlider.style('left', `${sketch.canvas.offsetLeft + (255 / 500) * width}px`);
-    sketch.text("Spring Constant: " + Math.round(sketchy.lengthSlider.value()) + "N/m", 155, 250);
-
-    sketch.text("Initial Velocity: " + sketchy.velocitySlider.value()/10 + "m/s",155, 310);
-    sketch.text("Displacement: " + Math.round(sketchy.thetaSlider.value())/10 + "m", -15, 250)
-    sketch.text("Drag: " + sketchy.dragSlider.value(), -15, 310);
-    sketch.text("Driver Amplitude: " + sketchy.amplitudeSlider.value() + "N", -15, 370);
-    sketch.text("Driver Frequency: " + sketchy.freqSlider.value(), 155, 370);
-
-
-    sketch.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 100, -21);
-
-    // sketch.currCamera.setPosition(0, 0, 50);
-  }
+  
 
 
 }
@@ -211,7 +286,18 @@ var energybarCharts = function(sketch) {
 
     // GPE
     heightPendulum = pendulum_length * (Math.cos(RK[0][frame]) - 1)
+
+
+
     GPE = -9.8 * heightPendulum
+    // SPRINGENERGY
+    SE = .5*spring_constant*(RK[0][frame]**2)
+
+    // HEY AZAL, FIX THIS LATER FOR READABILITY
+    if(isSpring){
+      GPE = SE
+    }
+
     // old heat code, to be restored?
     if (frame == 1) {
       heat = drag * Math.abs(RK[2][0]) * (frame / 24)
@@ -225,7 +311,14 @@ var energybarCharts = function(sketch) {
       heat += increment;
     }
     velocity = RK[2][frame]
-    TE = -9.8 * pendulum_length * (Math.cos(RK[0][0]) - 1) + 1.2 * pendulum_length ** 2 * RK[2][0] ** 2
+    
+    if(isSpring){
+      TE = spring_constant*(RK[0][0]**2) + (.5*RK[2][0] ** 2)
+      // 1/2kx^2 + 1/2mv^2
+    }
+    else{
+      TE = -9.8 * pendulum_length * (Math.cos(RK[0][0]) - 1) + 1.2 * pendulum_length ** 2 * RK[2][0] ** 2
+    }
     // Current heat method relies on indirect calculation from the total energy
 
 
@@ -235,12 +328,22 @@ var energybarCharts = function(sketch) {
     if (KE < 0) {
       KE = 0
     }
+    
     // Stops weird bouncing of KE bug 
+    if(isSpring){
 
-    heat = TE - GPE - KE
+      heat = -TE + (Math.abs(SE)+Math.abs(KE))
+    }
+    else{
+      heat = TE - (Math.abs(GPE)+Math.abs(KE))
+    }
+    
     if (drag == 0) {
       heat = 0
     }
+    // if(heat>0){
+    //   heat = 0
+    // }
 
 
     // if (oscilator.sketch.amplitudeSlider.value()!=0 || s1.sketch.freqSlider.value()!=0){
@@ -251,24 +354,42 @@ var energybarCharts = function(sketch) {
     heatColor = "#ffff00"
     KEColor = "#00bfff"
     GPEColor = "#00ff00"
-    GPEheight = GPE
-    heatHeight = heat
-    KEheight = KE
-    if (heat > 300) {
+    if(!isSpring){
+      roundingFactor = 10
+    }
+    else{
+      roundingFactor = 100000
+    }
+    if(!isSpring){
+
+      GPEheight = GPE
+      heatHeight = heat
+      KEheight = KE
+    }
+    else{
+      GPEheight = 600*SE/(roundingFactor)
+      heatHeight = -heat/(roundingFactor/7)
+      KEheight = KE/(roundingFactor/7)
+    }
+
+    if (heatHeight > 300) {
       heatHeight = 300
       heatColor = "#ff0000"
     }
-    if (Math.abs(KE) > 300) {
+    if (Math.abs(KEheight) > 300) {
       KEheight = 300
       KEColor = "#0000ff"
     }
-    if (GPE > 300) {
+    if (GPEheight > 300) {
       GPEheight = 300
       GPEColor = "#006400"
 
     }
     // Handles the changing of colors to indicate the hitting of max values
     // Stop the KEbar and Heat bar from overflowing, istead change the color when it reaches the top to indicate it
+
+
+
 
 
 
@@ -297,19 +418,26 @@ var energybarCharts = function(sketch) {
     sketch.stroke("#0060df");
     sketch.fill(KEColor)
     sketch.rect(50 + offsetBars, 450, 50, -(KEheight))
+    
     //  
 
     //  Heat Rectangle ^^
+    
 
 
 
 
     sketch.fill(GPEColor)
     sketch.noStroke()
-    sketch.text("GPE", 2 + offsetBars, 475)
+    if(!isSpring){
+      sketch.text("GPE", 2 + offsetBars, 475)
+    }
+    else{
+      sketch.text("SE", 12 + offsetBars, 475)
+    }
     energyIndicatorSize = 20
     if ((Math.round(KE).toString().length > 3)) {
-      energyIndicatorSize = 20 - (Math.round(KE).toString().length) - 1
+      energyIndicatorSize = 20 - (Math.round(KE/roundingFactor).toString().length) - 1
     }
     else {
       energyIndicatorSize = 20
@@ -318,7 +446,7 @@ var energybarCharts = function(sketch) {
     sketch.textSize(energyIndicatorSize);
 
     sketch.fill('#00ff00')
-    sketch.text(Math.round(GPE / 10) * 10, offsetBars, 150)
+    sketch.text(Math.round(GPE / roundingFactor), offsetBars, 150)
     sketch.textSize(20);
 
     sketch.fill(KEColor)
@@ -328,38 +456,37 @@ var energybarCharts = function(sketch) {
     sketch.fill(KEColor)
     energyIndicatorSize = 20
     if ((Math.round(KE).toString().length > 3)) {
-      energyIndicatorSize = 20 - (Math.round(KE).toString().length) - 1
+      energyIndicatorSize = 20 - (Math.round(KE/roundingFactor).toString().length) - 1
     }
     else {
       energyIndicatorSize = 20
     }
     sketch.fill('#00bfff')
     sketch.textSize(energyIndicatorSize);
-    sketch.text(Math.round(KE / 10) * 10, 50 + offsetBars, 150)
+    sketch.text(Math.round(KE / roundingFactor), 50 + offsetBars, 150)
     sketch.fill(0, 255, 0)
 
 
 
 
-    if (amplitude != 0 && frequency != 0) {
+    if (amplitude != 0 && frequency != 0 || isSpring) {
 
       heat = 0
       offsetBars = 20
       console.log(offsetBars)
     }
-    else {
+    
 
+    else if(!isSpring){
       offsetBars = 0
       sketch.strokeWeight(1);
       sketch.stroke("#0060df");
       sketch.fill(heatColor)
       sketch.textSize(15);
-
       sketch.text("HEAT", 105, 473)
       sketch.fill('#191a1a')
       sketch.stroke(100);
       sketch.rect(100 + offsetBars, 450, 50, -300)
-
       sketch.fill(heatColor)
       sketch.rect(100, 450, 50, -heatHeight);
       energyIndicatorSize = 20
@@ -372,18 +499,10 @@ var energybarCharts = function(sketch) {
       }
       sketch.fill("#ffff00")
       sketch.textSize(energyIndicatorSize);
-      sketch.text(Math.round(heat / 10) * 10, 100 + offsetBars, 150)
+      sketch.text(Math.round(heat / roundingFactor) * roundingFactor, 100 + offsetBars, 150)
 
 
     }
-
-
-
-
-
-
-
-
   }
 };
 
@@ -391,27 +510,7 @@ var energybarCharts = function(sketch) {
 
 new p5(energybarCharts);
 oscilator = new p5(s1)
-// // oscilator = 0
-// oscilator.remove();
-// springSketch = new p5(springSketch)
-// springSketch.parent("canvas-container");
-// const toggleButton = document.getElementById("toggleButton");
-// const sketchContainer = document.getElementById("sketchContainer");
-// currentSketch=1
-// toggleButton.addEventListener("click", function() {
-//   // toggle the currentSketch variable between s1 and springSketch
-//   if (currentSketch === 1) {
-//     springSketch.remove()
-//     oscilator = new p5(s1)
-//     currentSketch = 0
-//   } else {
-//     oscilator.remove()
-//     springSketch = new p5(springSketch)
-//     currentSketch = 1
-//   }
-//   // remove the old sketch from the container
 
-// });
 
 
 

@@ -84,17 +84,19 @@ function createChartSpring(xValues, yValues) {
 function updateSimSpring(sketchy) {
   // same reason as setups for weird function return logic
   function meowmeowwoof() {
+    spring_constant = sketchy.lengthSlider.value()
     amplitude = sketchy.amplitudeSlider.value()
     frequency = sketchy.freqSlider.value()
     spring_constant= sketchy.lengthSlider.value()
     RK = RK4(sketchy.thetaSlider.value(), sketchy.velocitySlider.value(), time, stepSize, A, B(0, sketchy.dragSlider.value()), c, D(amplitude, frequency), springdude(sketchy.lengthSlider.value()), firstOrderParam);
+    energy = energyCalculator(RK[0], RK[1], isSpring)
     drag = sketchy.dragSlider.value()
 
 
     t_0 = sketchy.thetaSlider.value()
     RKx = RK[0].slice();
     RKy = RK[1].slice();
-    pendulum_length = sketchy.lengthSlider.value()
+    spring_constant = sketchy.lengthSlider.value()
     // console.log(RK)
     frame = 0
     myChartSpring.destroy()
@@ -136,7 +138,7 @@ function setupSpring(sketchy) {
     var myCanvas = sketchy.createCanvas(width, width);
     myCanvas.parent('canvas-container');
     // myCanvas.position(200,100);
-    distance = 100;
+    distance = 0;
     time = 30;
     spring_constant = 10
 
@@ -146,6 +148,7 @@ function setupSpring(sketchy) {
     
     
     RK = RK4(distance, v_0, time, stepSize, A, B, c, D(amplitude, frequency), springdude(spring_constant), firstOrderParam);
+    energy = energyCalculator(RK[0], RK[1], isSpring)
     RKx = RK[0];
 
     // width = width*scaleX
@@ -177,7 +180,7 @@ function setupSpring(sketchy) {
 
 
 
-    sketchy.lengthSlider = sketchy.createSlider(.1, 10.1, pendulum_length, .5)
+    sketchy.lengthSlider = sketchy.createSlider(.1, 10.1, spring_constant, .5)
     sketchy.lengthSlider.style('position', 'absolute  ');
     // This correspongs to the spring constant
 
@@ -279,45 +282,24 @@ function springDrawy(sketchy){
     sketchy.background('#191a1a');
     
     if (loop == true) {
-      if (frame < RKx.length) {
-        displacement = 10*Math.sin(.1*frame)
-        sketchy.translate(100,100)
-        sketchy.stroke(255,255,0)
-        spring.draw(sketchy);
-        
-        
-        
-        sketchy.strokeWeight(3)
-        sketchy.stroke('#0060df');
-        sketchy.fill(0, 255, 255)
-        sketchy.rect(spring.current_end.x,spring.current_end.y-37,75,75)
-        spring.move(RK[0][frame]+3)
-        
-    
-        
-  
-      }
-      else{
-        
+      if (!(frame < RKx.length)) {
         console.log('framekill')
         frame = 0;
         spring = new Spring(length = 100, numLines = 4*(sketchy.lengthSlider.value())+3,x_i=0,y_i=150 ,thickness = 1, springHeight = 20);
-        
-  
       }
+
       frame++;
     }
-    else{
-        sketchy.translate(100,100)
-        sketchy.stroke(255,255,0)
-        spring.draw(sketchy);
-        sketchy.strokeWeight(3)
-        sketchy.stroke('#0060df');
-        sketchy.fill(0, 255, 255)
+
+    sketchy.translate(100,100)
+    sketchy.stroke(255,255,0)
+    spring.draw(sketchy);
         
-        spring.move(RK[0][frame]+3)
-        sketchy.rect(spring.end.x,spring.end.y-37,75,75)
-    }
+    sketchy.strokeWeight(3)
+    sketchy.stroke('#0060df');
+    sketchy.fill(0, 255, 255)
+    sketchy.rect(spring.current_end.x,spring.current_end.y-37,75,75)
+    spring.move(RK[0][frame]+3)
     sketchy.thetaSlider.changed(updateSimSpring(sketchy));
     sketchy.velocitySlider.changed(updateSimSpring(sketchy));
     sketchy.dragSlider.changed(updateSimSpring(sketchy));
@@ -344,7 +326,8 @@ function springDrawy(sketchy){
     sketchy.text("Driver Frequency: " + sketchy.freqSlider.value(), 155, 370);
 
 
-    sketchy.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 100, -21);
+    sketchy.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 150, -21);
+    // sketchy.text("Drag-Length Ratio: " + Math.round(10 * (sketchy.dragSlider.value() / (9.8 / sketchy.lengthSlider.value()))) / 10, 1, -21);
   }
 
   return meowkms
