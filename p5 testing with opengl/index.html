@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>   
-    <script src=".//energyCalculations/GPE.js"></script>
-    <script src=".//energyCalculations/kinetics.js"></script>
-    <script src=".//energyCalculations/springE.js"></script>
-    <script src=".//energyCalculations/heat.js"></script>
-    <script src=".//energyCalculations/utilities.js"></script>
-    <script src=".//energyCalculations/overallEnergies.js"></script>
 
-    
-    <script src=".//simulating/Parameters.js"></script>
-    <script src=".//simulating/Approximating Algorithms.js"></script>
-    
-    
-    <script src="plugins.js"></script>
-    
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-    
+<head>
+  <title>Oscillators</title>
+  <link rel="shortcut icon" type="image/jpg" href="favicon.png"/>
 
-    <script type="text/x-mathjax-config">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src=".//energyCalculations/GPE.js"></script>
+  <script src=".//energyCalculations/kinetics.js"></script>
+  <script src=".//energyCalculations/springE.js"></script>
+  <script src=".//energyCalculations/heat.js"></script>
+  <script src=".//energyCalculations/utilities.js"></script>
+  <script src=".//energyCalculations/overallEnergies.js"></script>
+
+
+  <script src=".//simulating/Parameters.js"></script>
+  <script src=".//simulating/Approximating Algorithms.js"></script>
+
+
+  <script src="plugins.js"></script>
+
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+  <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
           extensions: ["asciimath2jax.js"],
           jax: ["input/AsciiMath", "output/HTML-CSS"],
@@ -30,41 +33,43 @@
           }
       });
   </script>
-    <!-- import everything in energyCalculation -->
-    
-    
-    
+  <!-- import everything in energyCalculation -->
 
-    
-    
-    
 
-    
-    <!-- <script src="" type = module></script> -->
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-      </style> 
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8" />
 
-  </head>
-  
-  <body>
-    <main>
-          <!-- <script src="./simulating/implementation.js" ></script> -->
+
+
+
+
+
+
+  <!-- <script src="" type = module></script> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8" />
+
+</head>
+
+<body>
+  <main>
+    <!-- <script src="./simulating/implementation.js" ></script> -->
     <!-- <script src="./simulating/Parameters.js" type="module"></script> -->
-    
-    
-    
-    <div class = 'flex-row' id = 'top'>
-        
 
-      <div class = containery >
-        <p id= 'equation'  ></p>
-        <p id = 'subscript' ></p>
+
+
+    <div class='flex-row' id='top'>
+
+
+      <div class=containery>
+        <p id='equation'></p>
+        <p id='subscript'></p>
       </div>
-      <div class="containery" id = 'styled-asset'>
+      <div class="containery" id='styled-asset'>
         <div class="styled-asset__top">
           <div class="styled-asset__question">Which simulation would you like to run?</div>
         </div>
@@ -78,51 +83,51 @@
         </div>
       </div>
     </div>
-  </div>
-  <br>
-    
-    
-    
-    
-    
-    
+    </div>
+    <br>
+
+
+
+
+
+
     <!-- <label class="switch">
       <input type="checkbox" id="mySwitch">
       <span class="slider"></span>
     </label> -->
-    
-    
-    
+
+
+
     <!-- <p>How do different driving frequencies affect movement?</p> -->
     <div class='container' id="visualizations">
       <div class='fixed-width-div' id="canvas-container"></div>
-      <div class='fixed-width-div ' id = "barcharts"></div>
+      <div class='fixed-width-div ' id="barcharts"></div>
 
       <div class='variable-width-div'><canvas id='myChart'> </canvas></div>
       <div id="sketchContainer"></div>
 
-      
+
     </div>
-    
-    
-    
-    <script src = './/equationgeneration/latexTest.js'></script>
+
+
+
+    <script src='.//equationgeneration/latexTest.js'></script>
     <script src="oscillator.js"></script>
-    <script src = "springObj.js"></script>
+    <script src="springObj.js"></script>
     <script src="sketch.js"></script>
 
-    
-    
-    
-    
-      
-    
-    
-    
-    
-    
-  </body>
-    </main>
 
-  
+
+
+
+
+
+
+
+
+
+</body>
+</main>
+
+
 </html>

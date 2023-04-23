@@ -53,6 +53,9 @@ function queryAndPush(a,b,c,f,x_0,v_0,divID){
       equation = data['queryresult']['pods'][4]['subpods'][0]['plaintext']
       equation = roundDecimalsInString(equation, 2)
       paragraph.innerHTML = 'Equation: `' + equation + '`'
+      if(isSpring == false){
+        equation = equation.replace('x', 'θ')
+      }
       console.log(equation)
       // console.log(roundDecimalsInString(equation, 2))
       MathJax.Hub.Queue(['Typeset', MathJax.Hub, divID]);

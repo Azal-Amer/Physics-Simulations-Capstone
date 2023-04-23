@@ -67,7 +67,7 @@ function createChart(xValues, yValues) {
           elementIndex = activeElements[0].element.$context.dataIndex
           var clickedDatasetIndex = activeElements[0]._datasetIndex;
           var clickedElementindex = activeElements[0]._index;
-          frameValue = xValues[elementIndex] * 24
+          frameValue = elementIndex*10
           frame = Math.round(frameValue)
           console.log(frame)
           // THIS PART HANDLES THE CLICK INTERACTIVENESS
@@ -128,7 +128,7 @@ function setups1(sketchy) {
     frequency = 0
     RK = RK4(angle, v_0, time, stepSize, A, B, C, D(amplitude, frequency), zerothOrderParam(pendulum_length), firstOrderParam);
     let paragraph = document.getElementById('equation')
-    paragraph.innerHTML = 'Equation: `x(t)=0`'
+    paragraph.innerHTML = 'Equation: `θ(t)=0`'
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'equation']);
     subscript.innerHTML='Small angle approximation only works within 15˚'
     RKx = RK[0];

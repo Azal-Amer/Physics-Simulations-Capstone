@@ -66,7 +66,7 @@ function createChartSpring(xValues, yValues) {
           elementIndex = activeElements[0].element.$context.dataIndex
           var clickedDatasetIndex = activeElements[0]._datasetIndex;
           var clickedElementindex = activeElements[0]._index;
-          frameValue = xValues[elementIndex] * 24
+          frameValue = elementIndex*10
           frame = Math.round(frameValue)
           console.log(frame)
           // THIS PART HANDLES THE CLICK INTERACTIVENESS

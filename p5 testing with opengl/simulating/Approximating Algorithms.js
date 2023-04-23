@@ -182,5 +182,5 @@ function Smoother(RK) {
   xInterp.splice(0, xInterp.length)
   return [y, x]
 }
-// Literally just interpolates the input lists
+// Literally just extrapolates the input lists by a factor of 10
 
