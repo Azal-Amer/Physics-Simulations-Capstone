@@ -2,6 +2,7 @@
 // then take an input of the energies type, 
 
 function energyCalculator(positionList, velocityList,isSpring) {
+    console.log(positionList, velocityList, isSpring)
     let potentialEnergy;
     let KE;
     let heat;

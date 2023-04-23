@@ -89,7 +89,18 @@ function updateSimSpring(sketchy) {
     frequency = sketchy.freqSlider.value()
     spring_constant= sketchy.lengthSlider.value()
     RK = RK4(sketchy.thetaSlider.value(), sketchy.velocitySlider.value(), time, stepSize, A, B(0, sketchy.dragSlider.value()), c, D(amplitude, frequency), springdude(sketchy.lengthSlider.value()), firstOrderParam);
-    energy = energyCalculator(RK[0], RK[1], isSpring)
+    let paragraph = document.getElementById('equation')
+    if(amplitude ==0|| frequency ==0){
+      queryAndPush(1, sketchy.dragSlider.value(), spring_constant, "0",sketchy.thetaSlider.value()/10,sketchy.velocitySlider.value(),'equation')
+    }
+    else{
+      paragraph.innerHTML = 'Equation: null '
+      subscript.innerHTML = 'No Closed Form Solution'
+    }
+    
+
+    
+    energy = energyCalculator(RK[0], RK[2], isSpring);
     drag = sketchy.dragSlider.value()
 
 
@@ -148,7 +159,13 @@ function setupSpring(sketchy) {
     
     
     RK = RK4(distance, v_0, time, stepSize, A, B, c, D(amplitude, frequency), springdude(spring_constant), firstOrderParam);
-    energy = energyCalculator(RK[0], RK[1], isSpring)
+    let paragraph = document.getElementById('equation')
+    paragraph.innerHTML = 'Equation: `x(t)=0`'
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'equation']);
+    let subscript = document.getElementById('subscript')
+    subscript.innerHTML=''
+
+    energy = energyCalculator(RK[0], RK[2], isSpring);
     RKx = RK[0];
 
     // width = width*scaleX
@@ -204,13 +221,13 @@ function setupSpring(sketchy) {
 
 
     sketchy.reset = sketchy.createButton("Reset")
-    sketchy.reset.style('position', 'absolute ');
-    sketchy.reset.style('top', `${height - 360}px`);
+    sketchy.reset.style('position', 'relative ');
+    sketchy.reset.style('top', `${-height+15}px`);
     sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
     sketchy.pause = sketchy.createButton("⏯")
-    sketchy.pause.style('position', 'absolute ');
+    sketchy.pause.style('position', 'relative ');
 
-    sketchy.pause.style('top', `${height - 315}px`);
+    sketchy.pause.style('top', `${-height+20}px`);
     sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 85}px`);
 
     sketchy.reset.mousePressed(restart);
@@ -269,7 +286,7 @@ function setupSpring(sketchy) {
 
 
     windowResized(sketchy)
-    spring = new Spring(length = 100, numLines = 4*(sketchy.lengthSlider.value())+3,x_i=0,y_i=150 ,thickness = 1, springHeight = 20);
+    spring = new Spring(length = 100, numLines = 10*(sketchy.lengthSlider.value())+30,x_i=0,y_i=150 ,thickness = 1, springHeight = 20);
   }
   return moewklhjlsad
 
@@ -285,7 +302,7 @@ function springDrawy(sketchy){
       if (!(frame < RKx.length)) {
         console.log('framekill')
         frame = 0;
-        spring = new Spring(length = 100, numLines = 4*(sketchy.lengthSlider.value())+3,x_i=0,y_i=150 ,thickness = 1, springHeight = 20);
+        spring = new Spring(length = 100, numLines = 10*(sketchy.lengthSlider.value())+30,x_i=0,y_i=150 ,thickness = 1, springHeight = 20);
       }
 
       frame++;
@@ -299,7 +316,7 @@ function springDrawy(sketchy){
     sketchy.stroke('#0060df');
     sketchy.fill(0, 255, 255)
     sketchy.rect(spring.current_end.x,spring.current_end.y-37,75,75)
-    spring.move(RK[0][frame]+3)
+    spring.move(RK[0][frame]+100)
     sketchy.thetaSlider.changed(updateSimSpring(sketchy));
     sketchy.velocitySlider.changed(updateSimSpring(sketchy));
     sketchy.dragSlider.changed(updateSimSpring(sketchy));
@@ -326,7 +343,6 @@ function springDrawy(sketchy){
     sketchy.text("Driver Frequency: " + sketchy.freqSlider.value(), 155, 370);
 
 
-    sketchy.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 150, -21);
     // sketchy.text("Drag-Length Ratio: " + Math.round(10 * (sketchy.dragSlider.value() / (9.8 / sketchy.lengthSlider.value()))) / 10, 1, -21);
   }
 

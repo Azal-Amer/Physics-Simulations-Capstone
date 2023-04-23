@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ASCIIMath Example</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["asciimath2jax.js"],
+            jax: ["input/AsciiMath", "output/HTML-CSS"],
+            asciimath2jax: {
+                delimiters: [["`","`"]]
+            }
+        });
+    </script>
+</head>
+<body>
+    <p id = 'headering'>The Pythagorean theorem is expressed as</p>
+    <p id = 'equation'>`x(t) = (e^(-5/2 (51 + sqrt(2553)) t) ((4255 + 87 sqrt(2553)) e^(5 sqrt(2553) t) + 4255 - 87 sqrt(2553)))/8510`</p>
+    
+</body>
+<script src = 'latexTest.js'></script>
+</html>

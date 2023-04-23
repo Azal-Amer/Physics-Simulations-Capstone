@@ -15,9 +15,21 @@
     <script src=".//simulating/Parameters.js"></script>
     <script src=".//simulating/Approximating Algorithms.js"></script>
     
-    <script src = "springObj.js"></script>
+    
     <script src="plugins.js"></script>
-    <script src="oscillator.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          extensions: ["asciimath2jax.js"],
+          jax: ["input/AsciiMath", "output/HTML-CSS"],
+          asciimath2jax: {
+              delimiters: [["`","`"]]
+          }
+      });
+  </script>
     <!-- import everything in energyCalculation -->
     
     
@@ -40,26 +52,45 @@
   
   <body>
     <main>
-    </main>
-    <!-- <script src="./simulating/implementation.js" ></script> -->
+          <!-- <script src="./simulating/implementation.js" ></script> -->
     <!-- <script src="./simulating/Parameters.js" type="module"></script> -->
     
     
     
+    <div class = 'flex-row' id = 'top'>
+        
 
-    <p>Click on Points on the Graph to jump to those moments in time!</p>
+      <div class = containery >
+        <p id= 'equation'  ></p>
+        <p id = 'subscript' ></p>
+      </div>
+      <div class="containery" id = 'styled-asset'>
+        <div class="styled-asset__top">
+          <div class="styled-asset__question">Which simulation would you like to run?</div>
+        </div>
+        <div class="styled-asset__bottom">
+          <div class="styled-asset__toggle">
+            <label for="styled-asset__toggle-switch1" class="styled-asset__toggle-label">Pendulum</label>
+            <input type="checkbox" id="mySwitch" class="styled-asset__toggle-switch">
+            <label for="mySwitch" class="styled-asset__toggle-slider"></label>
+            <label for="styled-asset__toggle-switch2" class="styled-asset__toggle-label">Spring</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+    
+    
+    
+    
+    
+    
     <!-- <label class="switch">
       <input type="checkbox" id="mySwitch">
       <span class="slider"></span>
     </label> -->
-    <div class="switch">
-      <label>
-        <span class="spring-text">Pendulum </span>
-        <input type="checkbox" id="mySwitch" unchecked>
-        <span class="lever"></span>
-        <span class="pendulum-text">Spring</span>
-      </label>
-    </div>
+    
     
     
     <!-- <p>How do different driving frequencies affect movement?</p> -->
@@ -73,7 +104,11 @@
       
     </div>
     
-    <p></p>
+    
+    
+    <script src = './/equationgeneration/latexTest.js'></script>
+    <script src="oscillator.js"></script>
+    <script src = "springObj.js"></script>
     <script src="sketch.js"></script>
 
     
@@ -87,5 +122,7 @@
     
     
   </body>
+    </main>
+
   
 </html>

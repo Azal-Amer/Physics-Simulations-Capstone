@@ -120,6 +120,7 @@ mySwitch.addEventListener("change", function() {
     chartInstance.destroy();
   });
   oscilator = new p5(s1)
+  
   // if (mySwitch.checked) {
   //   switchLabel.innerText = "Pendulum";
   // } else {
@@ -229,16 +230,15 @@ var s1 = function(sketch) {
 
       sketch.freqSlider.style('top', `${sketch.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
       sketch.freqSlider.style('left', `${sketch.canvas.offsetLeft + (255 / 500) * width}px`);
-      sketch.text("Spring Constant: " + Math.round(sketchy.lengthSlider.value()) + "N/m", 155, 250);
+      sketch.text("Spring Constant: " + Math.round(sketch.lengthSlider.value()) + "N/m", 155, 250);
 
-      sketch.text("Initial Velocity: " + sketchy.velocitySlider.value()/10 + "m/s",155, 310);
-      sketch.text("Displacement: " + Math.round(sketchy.thetaSlider.value())/10 + "m", -15, 250)
-      sketch.text("Drag: " + sketchy.dragSlider.value(), -15, 310);
-      sketch.text("Driver Amplitude: " + sketchy.amplitudeSlider.value() + "N", -15, 370);
-      sketch.text("Driver Frequency: " + sketchy.freqSlider.value(), 155, 370);
+      sketch.text("Initial Velocity: " + sketch.velocitySlider.value()/10 + "m/s",155, 310);
+      sketch.text("Displacement: " + Math.round(sketch.thetaSlider.value())/10 + "m", -15, 250)
+      sketch.text("Drag: " + sketch.dragSlider.value(), -15, 310);
+      sketch.text("Driver Amplitude: " + sketch.amplitudeSlider.value() + "N", -15, 370);
+      sketch.text("Driver Frequency: " + sketch.freqSlider.value(), 155, 370);
 
 
-      sketch.text("Drag-Length Ratio: " + Math.round(10*(sketchy.dragSlider.value() / sketchy.lengthSlider.value()))/10, 100, -21);
 
       // sketch.currCamera.setPosition(0, 0, 50);
     }
@@ -391,7 +391,9 @@ var energybarCharts = function(sketch) {
 
 
 
-
+    // GPEheight = energy.potentialEnergy[frame]
+    // heatHeight = energy.heat[frame]
+    // KEheight = energy.kineticEnergy[frame]
 
     sketch.background("#191a1a");
     sketch.fill(255)

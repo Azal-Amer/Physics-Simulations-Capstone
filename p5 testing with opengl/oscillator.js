@@ -127,8 +127,12 @@ function setups1(sketchy) {
     amplitude = 0
     frequency = 0
     RK = RK4(angle, v_0, time, stepSize, A, B, C, D(amplitude, frequency), zerothOrderParam(pendulum_length), firstOrderParam);
+    let paragraph = document.getElementById('equation')
+    paragraph.innerHTML = 'Equation: `x(t)=0`'
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'equation']);
+    subscript.innerHTML='Small angle approximation only works within 15˚'
     RKx = RK[0];
-    energy = energyCalculator(RK[0], RK[1], isSpring)
+    energy = energyCalculator(RK[0], RK[2], isSpring);
 
     // width = width*scaleX
     // height = width*scaleY
@@ -182,13 +186,15 @@ function setups1(sketchy) {
 
 
     sketchy.reset = sketchy.createButton("Reset")
-    sketchy.reset.style('position', 'absolute ');
-    sketchy.reset.style('top', `${height - 360}px`);
+    sketchy.reset.style('position', 'relative ');
+    sketchy.reset.style('top', `${-height +15}px`);
     sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
-    sketchy.pause = sketchy.createButton("⏯")
-    sketchy.pause.style('position', 'absolute ');
 
-    sketchy.pause.style('top', `${height - 315}px`);
+
+    sketchy.pause = sketchy.createButton("⏯")
+    sketchy.pause.style('position', 'relative ');
+
+    sketchy.pause.style('top', `${-height+20}px`);
     sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 85}px`);
 
     sketchy.reset.mousePressed(restart);
@@ -280,9 +286,11 @@ function windowResized(sketchy, width) {
 
   sketchy.freqSlider.style('top', `${sketchy.canvas.offsetTop + ((500 - offsetSlider) / 500) * height}px`);
   sketchy.freqSlider.style('left', `${sketchy.canvas.offsetLeft + (255 / 500) * width}px`);
-  sketchy.reset.style('top', `${height - 360}px`);
+
+
+  sketchy.reset.style('top', `${-height+20}px`);
   sketchy.reset.style('left', `${sketchy.canvas.offsetLeft + 72}px`);
-  sketchy.pause.style('top', `${height - 315}px`);
+  sketchy.pause.style('top', `${-height+20}px`);
   sketchy.pause.style('left', `${sketchy.canvas.offsetLeft + 85}px`);
   // Repositions the sliders to match the location in the window
 
@@ -303,7 +311,18 @@ function updateSim(sketchy) {
     amplitude = sketchy.amplitudeSlider.value()
     frequency = sketchy.freqSlider.value()
     RK = RK4(sketchy.thetaSlider.value(), sketchy.velocitySlider.value(), time, stepSize, A, B(0, sketchy.dragSlider.value()), C, D(amplitude, frequency), zerothOrderParam(sketchy.lengthSlider.value()), firstOrderParam);
-    energy = energyCalculator(RK[0], RK[1], isSpring)
+    let paragraph = document.getElementById('equation')
+    if(amplitude ==0|| frequency ==0){
+      subscript.innerHTML='Small angle approximation only works within 15˚'
+      queryAndPush(Math.sqrt(sketchy.lengthSlider.value()/9.8), sketchy.dragSlider.value(), 1, "0",sketchy.thetaSlider.value(),sketchy.velocitySlider.value(),'equation')
+
+    }
+    else{
+      paragraph.innerHTML = 'Equation: null '
+      subscript.innerHTML = 'No Closed Form Solution'
+    }
+
+    energy = energyCalculator(RK[0], RK[2], isSpring);
     drag = sketchy.dragSlider.value()
 
 
@@ -402,7 +421,6 @@ function drawy(sketchy) {
     sketchy.text("Driver Frequency: " + sketchy.freqSlider.value(), 1, 24);
 
 
-    sketchy.text("Drag-Length Ratio: " + Math.round(10 * (sketchy.dragSlider.value() / (9.8 / sketchy.lengthSlider.value()))) / 10, 1, -21);
 
 
     // Handles the labels on the sliders, keeping them matching the slider values
