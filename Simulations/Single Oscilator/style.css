@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Hussar Bold";
-  src: url('/Assets/HussarBold.otf');
+  src: url('./Font Assets/HussarBoldWeb.ttf');
 }
 html, body {
   right: 50px;
