@@ -85,7 +85,7 @@ function createChart(xValues, yValues) {
 //   handles the creation of the line chart
 
 function preloads1(sketchy) {
-  myFont = sketchy.loadFont('/Assets/HussarBold.otf');
+  myFont = sketchy.loadFont('./Font Assets/HussarBoldWeb.ttf');
 
 }
 function pause() {
