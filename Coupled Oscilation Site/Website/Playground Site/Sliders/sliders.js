@@ -3,7 +3,7 @@ let isClicked= false;
 let selected;
 let posDiv = document.getElementById('slider1');
 let velDiv = document.getElementById('slider2');
-
+let unit;
 function generateSliders(){
     initialPosition = createSlider(-10, 10, .25);
     initialVelocity = createSlider(-10, 10, .24);
@@ -47,6 +47,10 @@ function updateCheckboxValue() {
 
         posDiv.style.display = 'none'
         velDiv.style.display = 'none'
+        
+            unit = '(m)'
+
+            
         // select('slider1').hide();
         // select('slider2').hide();
     } 
@@ -56,6 +60,8 @@ function updateCheckboxValue() {
         console.log('false')
         posDiv.style.display = 'block'
         velDiv.style.display = 'block'
+        slider4Value.html()
+        unit = '(N)'
         
     }
     if(!isNaN(selection)){
@@ -68,6 +74,7 @@ function updateCheckboxValue() {
 
 function updateOscilator(){
     if(playground==true){
+        updateCheckboxValue()
         initialPosition.elt.disabled = false;
         initialVelocity.elt.disabled = false;
         driverFrequency.elt.disabled = false;
@@ -84,11 +91,20 @@ function updateOscilator(){
         
         
 
-        slider1Value.html(`Initial Displacement ${initialPosition.value()}`);
-        slider2Value.html(`Initial Velocity: ${initialVelocity.value()}`);
-        slider3Value.html(`Driver Frequency ${driverFrequency.value()}`);
-        slider4Value.html(`Driver Amplitude ${driverAmplitude.value()}`);
+        slider1Value.html(`Initial Displacement (m): ${initialPosition.value()}`);
+        slider2Value.html(`Initial Velocity (m/s): ${initialVelocity.value()}`);
+        
+        
+        
         isClicked = anchorStates[selection]
+        // if(anchorStates[selection]){
+        //     unit = '(m)'
+        // }
+        // else{
+        //     unit = '(N)'
+        // }
+        slider3Value.html(`Driver Frequency (Hz): ${driverFrequency.value()}`);
+        slider4Value.html(`Driver Amplitude ${unit}: ${driverAmplitude.value()}`);
         updateCheckboxValue();
         
     }
@@ -124,9 +140,14 @@ function updateSliders(selected){
 
     // we need to grab the current frequency and amplitude of the driver
     slider1Value.html(`Initial Displacement (m): ${initialPosition.value()}`);
-    slider2Value.html(`Initial Velocity(m/s): ${initialVelocity.value()}`);
-    slider3Value.html(`Driver Frequency: ${driverFrequency.value()}`);
-    slider4Value.html(`Driver Amplitude: ${driverAmplitude.value()}`);
+    slider2Value.html(`Initial Velocity (m/s): ${initialVelocity.value()}`);
+    
+    console.log(anchorStates[selection])
+    checkbox.checked(anchorStates[selection])
+    updateCheckboxValue()
+    slider3Value.html(`Driver Frequency (Hz): ${driverFrequency.value()}`);
+    slider4Value.html(`Driver Amplitude ${unit}: ${driverAmplitude.value()}`);
+
 
 
     // make a function that updates the current oscilators properties based on the sliders

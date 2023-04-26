@@ -25,7 +25,7 @@ function createChartSpring(xValues, yValues) {
     data: {
       labels: rounded,
       datasets: [{
-        label: 'Displacement Graph  ',
+        label: 'Interactive Displacement Graph  ',
         data: degreesArray,
         backgroundColor: '#1566e4',
         borderColor: '#ffffff',

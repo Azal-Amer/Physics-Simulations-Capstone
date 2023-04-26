@@ -182,7 +182,4 @@ padding : 10px;
   text-align: right;
   margin-left: 10px;
 }
-/* 
-I've added the flex: 1 property to the .styled-asset__toggle-label selector to make sure that the labels take up equal space on either side of the switch. I've also added text-align and margin properties to the first and last labels respectively to make sure they're right-aligned and left-aligned respectively.
 
-Let me know if this is what you had in mind! */
