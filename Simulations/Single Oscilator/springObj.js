@@ -100,7 +100,6 @@ function updateSimSpring(sketchy) {
     
 
     
-    energy = energyCalculator(RK[0], RK[2], isSpring);
     drag = sketchy.dragSlider.value()
 
 
@@ -165,7 +164,6 @@ function setupSpring(sketchy) {
     let subscript = document.getElementById('subscript')
     subscript.innerHTML=''
 
-    energy = energyCalculator(RK[0], RK[2], isSpring);
     RKx = RK[0];
 
     // width = width*scaleX

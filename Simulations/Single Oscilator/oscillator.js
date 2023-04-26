@@ -132,7 +132,6 @@ function setups1(sketchy) {
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'equation']);
     subscript.innerHTML='Small angle approximation only works within 15˚'
     RKx = RK[0];
-    energy = energyCalculator(RK[0], RK[2], isSpring);
 
     // width = width*scaleX
     // height = width*scaleY
@@ -322,7 +321,6 @@ function updateSim(sketchy) {
       subscript.innerHTML = 'No Closed Form Solution'
     }
 
-    energy = energyCalculator(RK[0], RK[2], isSpring);
     drag = sketchy.dragSlider.value()
 
 
