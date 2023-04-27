@@ -282,7 +282,7 @@ function linkMode(){
     linking = true;
     properties = false;
     playground = true
-    description.textContent = 'Click two boxes together to add a spring ';
+    description.textContent = 'Click two boxes together to add a spring between horizontal edges ';
     supplementalDesc.textContent = 'Click them again to remove it. Click away to deselect';
 }
 function propertiesMode(){
