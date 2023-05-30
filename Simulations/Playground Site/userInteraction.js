@@ -133,9 +133,7 @@ function mousePressed() {
       
 
     }
-    else{
-      mouseDragged= null
-    }
+
 
 }
 
@@ -195,6 +193,7 @@ function mouseReleased() {
       
     linkToLatex(links,rectangles.length)
     updateObjectIdentities()
+    mouseDragged = null;
   }
 }
 
