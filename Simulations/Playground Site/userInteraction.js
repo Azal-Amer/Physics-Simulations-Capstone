@@ -28,10 +28,11 @@ function mousePressed() {
           // rectangles.push(currentRectangle);
 
           mouseDragged = function() {
-          rectangles[i].x_i = mouseX - offsetX;
-          rectangles[i].move(0);
-          rectangles[i].y = mouseY - offsetY;
-          
+            console.log('THE NOT DRAG ONE')
+            rectangles[i].x_i = mouseX - offsetX;
+            rectangles[i].move(0);
+            rectangles[i].y = mouseY - offsetY;
+            
         }
   
         }
@@ -125,9 +126,15 @@ function mousePressed() {
       mouseDragged = function() {
         // redraw();
         
-        fill(255,255,255,255)
-        rect(startPoint.x, startPoint.y, mouseX - startPoint.x, mouseY - startPoint.y);
+        drawGradientRect(startPoint.x, startPoint.y, mouseX - startPoint.x, mouseY - startPoint.y);
+
+        console.log('draging')
       }
+      
+
+    }
+    else{
+      mouseDragged= null
     }
 
 }
@@ -189,7 +196,6 @@ function mouseReleased() {
     linkToLatex(links,rectangles.length)
     updateObjectIdentities()
   }
-  mouseDragged = null;
 }
 
 function redraw() {
