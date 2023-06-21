@@ -177,6 +177,7 @@ p{
   transition: all 0.3s ease-in-out;
 }
 
+
 .Mode-Button:hover {
   color: #000000;
   background-color: #ffffff;
@@ -186,6 +187,11 @@ p{
   .Mode-Button {
     font-size: 0.8rem;
   }
+}
+
+#button0{
+  width: 82%;
+  background-color: lightseagreen;
 }
 #button1{
   background-color: darkred;
@@ -215,4 +221,7 @@ p{
   border-top-right-radius: var(--radius);
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
+}
+a{
+  flex:none;
 }
